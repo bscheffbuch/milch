@@ -1,5 +1,22 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Desktop-Fassung
+
+milch läuft zusätzlich als Desktop-Anwendung auf Basis von Tauri. Die
+Oberfläche ist dieselbe, sie wird für das Paket allerdings statisch exportiert
+(`output: "export"` in `next.config.ts`), weil im Paket kein Node-Server
+mitläuft.
+
+```bash
+npm run tauri:dev     # Anwendung im Entwicklungsmodus starten
+npm run tauri:build   # Pakete für das laufende System bauen
+```
+
+Die Anwendung prüft beim Start, ob es im GitHub-Repository eine neuere Version
+gibt, und bietet sie an. Wie das eingerichtet ist, wie man eine Version
+veröffentlicht und warum macOS und Windows beim ersten Öffnen warnen, steht in
+[docs/aktualisierungen.md](docs/aktualisierungen.md).
+
 ## Getting Started
 
 First, run the development server:

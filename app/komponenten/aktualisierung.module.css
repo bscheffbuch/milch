@@ -1,0 +1,159 @@
+/*
+ * Die Farben sind bewußt vollständig unbunt gehalten — Grautöne mit Sättigung
+ * null, damit sie in keinem Modus einen Stich bekommen. Der einzige Farbwert
+ * im ganzen Baustein ist das Rot des Fehlerfalls, und der trägt eine Aussage.
+ */
+.karte {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--aktualisierung-rand, #e4e4e4);
+  border-radius: 10px;
+  background: var(--aktualisierung-grund, #ffffff);
+  color: var(--foreground);
+  /* Ein einzelner, sehr flacher Schatten trennt die Karte vom Inhalt
+   * darunter. Er ersetzt einen zweiten Rahmen, statt zu ihm hinzuzukommen. */
+  box-shadow: 0 6px 20px rgb(0 0 0 / 12%);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.titel {
+  font-weight: 600;
+  /* Versionsnummern stehen in derselben System-Schrift wie alles andere; für
+   * die gleichmäßige Breite der Ziffern sorgt `tabular-nums`, nicht eine
+   * Monoschrift. */
+  font-variant-numeric: tabular-nums;
+}
+
+.karte[role="alert"] .titel {
+  color: var(--aktualisierung-fehler, #b91c1c);
+}
+
+.text {
+  color: var(--aktualisierung-gedaempft, #6b6b6b);
+  font-variant-numeric: tabular-nums;
+  /* Der Text einer Veröffentlichung kann beliebig lang sein. Statt die Karte
+   * wachsen zu lassen, bekommt er eine eigene, begrenzte Scrollfläche. */
+  max-height: 8em;
+  overflow-y: auto;
+  white-space: pre-line;
+}
+
+.knopfreihe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.knopf {
+  padding: 6px 14px;
+  border: 1px solid var(--aktualisierung-rand, #e4e4e4);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  /* Beim Überfahren ändert sich nur die Erscheinung an Ort und Stelle — der
+   * Knopf verschiebt oder vergrößert sich nicht. */
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.knopf:hover {
+  background: var(--aktualisierung-schwebend, #f2f2f2);
+  border-color: var(--aktualisierung-rand-stark, #c9c9c9);
+}
+
+.knopf:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.knopfBetont {
+  border-color: var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.knopfBetont:hover {
+  /* Der betonte Knopf ist bereits gefüllt; er kann beim Überfahren nur noch
+   * heller oder dunkler werden, nicht die Füllung wechseln. */
+  background: var(--aktualisierung-betont-schwebend, #3a3a3a);
+  border-color: var(--aktualisierung-betont-schwebend, #3a3a3a);
+}
+
+.balken {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--aktualisierung-spur, #ededed);
+  overflow: hidden;
+}
+
+.fuellung {
+  height: 100%;
+  background: var(--foreground);
+  transition: width 120ms linear;
+}
+
+/*
+ * Meldet der Server keine Gesamtgröße, ist der Anteil schlicht unbekannt. Der
+ * Balken wandert dann, statt einen Stand vorzutäuschen; die tatsächlich
+ * geladene Menge steht als Zahl darunter.
+ */
+.fuellungUnbestimmt {
+  height: 100%;
+  width: 35%;
+  background: var(--foreground);
+  animation: wandern 1.4s ease-in-out infinite;
+}
+
+@keyframes wandern {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(286%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knopf {
+    transition: none;
+  }
+
+  .fuellung {
+    transition: none;
+  }
+
+  .fuellungUnbestimmt {
+    /* Ohne Bewegung bleibt eine gleichmäßig gedämpfte Spur übrig. Sie behauptet
+     * keinen Stand — die Zahl darunter sagt, was wirklich geladen ist. */
+    width: 100%;
+    animation: none;
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .karte {
+    --aktualisierung-grund: #171717;
+    --aktualisierung-rand: #2e2e2e;
+    --aktualisierung-rand-stark: #4a4a4a;
+    --aktualisierung-gedaempft: #a1a1a1;
+    --aktualisierung-schwebend: #262626;
+    --aktualisierung-betont-schwebend: #cfcfcf;
+    --aktualisierung-spur: #262626;
+    --aktualisierung-fehler: #f87171;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 45%);
+  }
+}

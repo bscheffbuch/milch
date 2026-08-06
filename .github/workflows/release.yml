@@ -1,0 +1,111 @@
+name: Release
+
+# Gebaut wird nur, wenn ein Versions-Tag geschoben wird. Der Tag ist damit die
+# einzige Stelle, an der eine Veröffentlichung ausgelöst wird — ein Push auf
+# main baut bewusst nichts, damit nicht versehentlich Releases entstehen.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  # tauri-action legt den Release an und lädt die Artefakte hoch, dafür braucht
+  # der Workflow Schreibrechte auf das Repository.
+  contents: write
+
+jobs:
+  release:
+    strategy:
+      # Ohne fail-fast bricht ein fehlgeschlagener Windows-Build nicht die
+      # bereits laufenden macOS-Jobs ab. Bei einem Release ist ein halbes
+      # Ergebnis mehr wert als gar keines, weil sich der fehlende Teil danach
+      # einzeln nachziehen lässt.
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: "--target aarch64-apple-darwin"
+          - platform: macos-latest
+            args: "--target x86_64-apple-darwin"
+          - platform: ubuntu-22.04
+            args: ""
+          - platform: windows-latest
+            args: ""
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Rust einrichten
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Auf macOS werden beide Architekturen einzeln gebaut, also müssen
+          # beide Zielplattformen installiert sein. Auf den anderen Systemen
+          # bleibt die Liste leer und es wird nur das Standardziel benutzt.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust-Cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+          # Ohne diesen Schlüssel teilen sich die beiden macOS-Jobs denselben
+          # Cache und überschreiben sich gegenseitig.
+          key: ${{ matrix.platform }}-${{ matrix.args }}
+
+      - name: Systembibliotheken für Linux
+        if: matrix.platform == 'ubuntu-22.04'
+        # Tauri baut die Oberfläche unter Linux auf WebKitGTK auf; diese Pakete
+        # sind auf dem Runner nicht vorinstalliert. Absichtlich Ubuntu 22.04 und
+        # nicht neuer: das erzeugte AppImage läuft nur auf Systemen mit
+        # mindestens der glibc-Version, gegen die es gebaut wurde.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libgtk-3-dev \
+            libxdo-dev \
+            libssl-dev \
+            build-essential \
+            file \
+            wget
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Bauen und Release anlegen
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Dies ist *nicht* die Signatur, die Windows oder macOS prüfen —
+          # damit signiert ausschliesslich der Updater seine eigenen Pakete,
+          # damit die laufende Anwendung erkennt, dass ein Update wirklich aus
+          # diesem Repository stammt. Der Schlüssel ist kostenlos und wird mit
+          # `npm run tauri signer generate` erzeugt.
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Milch ${{ github.ref_name }}"
+          releaseBody: "Der Text dieses Releases wird der Anwendung im Aktualisierungsfenster angezeigt."
+          # Der Release entsteht als Entwurf. Erst wenn alle vier Jobs ihre
+          # Artefakte hochgeladen haben und der Entwurf von Hand veröffentlicht
+          # wird, findet die Anwendung die `latest.json` unter
+          # `releases/latest/download/` — bis dahin sieht niemand ein halbes
+          # Release mit fehlenden Plattformen.
+          releaseDraft: true
+          prerelease: false
+          # Erzeugt und pflegt die `latest.json`, die der Updater abfragt. Jeder
+          # Matrix-Job trägt seinen Plattform-Eintrag in dieselbe Datei nach.
+          includeUpdaterJson: true
+          args: ${{ matrix.args }}

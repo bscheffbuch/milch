@@ -1,0 +1,10 @@
+{
+  "identifier": "desktop-capability",
+  "description": "Rechte, die nur die Desktop-Fassung braucht: die Aktualisierung selbst und der Neustart, der ihr folgt.",
+  "platforms": ["macOS", "windows", "linux"],
+  "windows": ["main"],
+  "permissions": [
+    "updater:default",
+    "process:default"
+  ]
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Aktualisierung from "./komponenten/aktualisierung";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Liegt im Layout und nicht in einer einzelnen Seite, damit die
+            Prüfung genau einmal beim Programmstart läuft und nicht bei jedem
+            Seitenwechsel innerhalb der Anwendung erneut. */}
+        <Aktualisierung />
+      </body>
     </html>
   );
 }
