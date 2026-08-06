@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 
+import Aktualisierung from "@/components/Aktualisierung";
 import { DockProvider, DockRegion } from "@/components/Dock";
 import Nav, { type NavGroup } from "@/components/Nav";
 import { blockedCowsOn, daysSince } from "@/lib/calc/report";
@@ -104,26 +105,35 @@ function Frame({ children }: { children: React.ReactNode }) {
       <DockRegion />
 
       {/*
-        Ein fehlgeschlagener Auftrag darf nicht stumm bleiben — und ein
-        gelungener auch nicht, wenn sein Ergebnis in einer Datei liegt und
-        nicht auf dem Bildschirm. Beide teilen sich die Ecke; zwei zugleich
-        gibt es nicht, weil jeder Auftrag genau eines von beidem hinterlässt.
+        Die Ecke unten links. Ein fehlgeschlagener Auftrag darf nicht stumm
+        bleiben — und ein gelungener auch nicht, wenn sein Ergebnis in einer
+        Datei liegt und nicht auf dem Bildschirm. Von diesen beiden gibt es nie
+        zwei zugleich, weil jeder Auftrag genau eines von beidem hinterlässt.
+
+        Die Aktualisierung ist die Ausnahme: sie hängt an keinem Auftrag,
+        sondern kommt beim Start von sich aus. Sie kann also neben einer der
+        beiden Meldungen stehen, und darum stapelt die Ecke jetzt, statt jedem
+        Stück eine feste Stelle zu geben. Übereinanderliegende Karten wären der
+        einzige andere Ausgang gewesen.
       */}
-      {error ? (
-        <div className="flash no-print" role="alert">
-          <span>{error}</span>
-          <button className="btn-quiet btn-sm" onClick={clearError} type="button">
-            Schließen
-          </button>
-        </div>
-      ) : notice ? (
-        <div className="flash no-print" data-tone="done" role="status">
-          <span>{notice}</span>
-          <button className="btn-quiet btn-sm" onClick={clearNotice} type="button">
-            Schließen
-          </button>
-        </div>
-      ) : null}
+      <div className="meldungen">
+        {error ? (
+          <div className="flash no-print" role="alert">
+            <span>{error}</span>
+            <button className="btn-quiet btn-sm" onClick={clearError} type="button">
+              Schließen
+            </button>
+          </div>
+        ) : notice ? (
+          <div className="flash no-print" data-tone="done" role="status">
+            <span>{notice}</span>
+            <button className="btn-quiet btn-sm" onClick={clearNotice} type="button">
+              Schließen
+            </button>
+          </div>
+        ) : null}
+        <Aktualisierung />
+      </div>
     </div>
   );
 }

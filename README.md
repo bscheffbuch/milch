@@ -84,6 +84,28 @@ mitgeliefert wird.
 Für Linux gilt weiterhin: denselben Befehl (`npm run app:build`) auf einem
 Linux-Rechner ausführen. Der Quelltext ist für alle drei derselbe.
 
+## Veröffentlichen und aktualisieren
+
+Eine neue Fassung entsteht nicht von Hand, sondern an einem Tag:
+
+```bash
+npm version patch
+```
+
+```bash
+git push --follow-tags
+```
+
+Der Tag baut auf GitHub alle vier Pakete — macOS auf Apple Silicon, macOS auf
+Intel, Linux und Windows — und legt sie als Release-Entwurf ab. Wird der Entwurf
+veröffentlicht, findet ihn jede installierte Kopie beim nächsten Start von
+selbst und bietet unten links an, ihn einzuspielen. Ist alles aktuell, erscheint
+nichts.
+
+Wie das im einzelnen zusammenhängt — die beiden verschiedenen Signaturen, warum
+macOS und Windows beim ersten Start trotzdem warnen, und was passiert, wenn der
+Schlüssel verlorengeht — steht in [`docs/aktualisierungen.md`](docs/aktualisierungen.md).
+
 ## Im Heimnetz freigeben
 
 Gemolken wird im Stall, gerechnet am Rechner — dazwischen liegt der Weg zurück

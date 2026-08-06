@@ -37,4 +37,9 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri = { version = "2", features = [] }
 tauri-plugin-dialog = "2"
+# Die Aktualisierung holt und prüft das neue Paket, `process` startet danach
+# neu. Beides gehört zusammen: ein eingespieltes Paket, das erst beim nächsten
+# Öffnen von Hand wirksam wird, ist eine halbe Aktualisierung.
+tauri-plugin-process = "2"
+tauri-plugin-updater = "2"
 tiny_http = "0.12"

@@ -3374,12 +3374,36 @@ legend {
   weggeklickt wird — eine Meldung, die von selbst verschwindet, hat man im
   Zweifel nicht gelesen.
 */
-.flash {
+/*
+  Die Ecke selbst. Sie trug früher nur die eine Meldung, und die brachte ihre
+  Stelle mit. Seit die Aktualisierung dazugekommen ist, können zwei Karten
+  gleichzeitig anstehen — die Ecke stapelt deshalb, statt daß jedes Stück sich
+  irgendwo festmacht. `column-reverse` hält die jüngste Meldung unten, dort wo
+  vorher die einzige stand; die ältere rückt nach oben weg, statt der neuen
+  ihren Platz zu nehmen.
+
+  Ohne Inhalt hat der Kasten keine Ausdehnung, und Zeiger nimmt er ohnehin
+  keine an — er darf deshalb stehenbleiben, auch wenn gerade nichts zu melden
+  ist.
+*/
+.meldungen {
   position: fixed;
   left: 18px;
   bottom: 18px;
   z-index: 70;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 10px;
   max-width: min(460px, calc(100vw - 36px));
+  pointer-events: none;
+}
+
+.meldungen > * {
+  pointer-events: auto;
+}
+
+.flash {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -3738,5 +3762,99 @@ legend {
   .spark-read,
   .bars-read {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------------ Aktualisierung */
+
+/*
+  Die Karte, die eine neue Fassung anbietet. Sie sieht aus wie die gelungene
+  Meldung nebenan und nicht wie die fehlgeschlagene: eine verfügbare
+  Aktualisierung ist kein Zustand, der Aufmerksamkeit erzwingt, sondern ein
+  Angebot. Farbe bekäme sie erst, wenn wirklich etwas nicht stimmt — und dann
+  ist es dieselbe Farbe, die auch sonst „hier stimmt etwas nicht“ heißt.
+
+  Die Breite ist festgelegt und wächst nicht mit dem Text: der Balken darunter
+  soll beim Laden nicht springen, und die Anmerkungen zu einer Fassung sind
+  mal ein Halbsatz und mal drei Zeilen.
+*/
+.aktualisierung {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: min(400px, 100%);
+  padding: 11px 12px 11px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 14%);
+  animation: flash-in 160ms var(--ease);
+}
+
+.aktualisierung > .stack-sm {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ein Fehlschlag beim Einspielen trägt denselben Ton wie jeder andere. */
+.aktualisierung-fehler {
+  border-color: var(--alert-border);
+  background: var(--alert-bg);
+  color: var(--alert);
+}
+
+/*
+  Der Fortschritt. Dünn und grau: er sagt, daß etwas läuft, und ist keine
+  Kennzahl — die Aufmerksamkeit gehört dem Text darüber.
+*/
+.aktualisierung-balken {
+  overflow: hidden;
+  width: 100%;
+  height: 4px;
+  border-radius: var(--pill);
+  background: var(--surface-3);
+}
+
+.aktualisierung-fuellung {
+  height: 100%;
+  background: var(--text-muted);
+  transition: width 0.12s;
+}
+
+/*
+  Nennt die Gegenstelle keine Gesamtgröße, wandert ein Stück durch den Balken,
+  statt daß er sich füllt. Ein Anteil, den niemand kennt, wird hier nicht
+  erfunden.
+*/
+.aktualisierung-lauf {
+  width: 28%;
+  height: 100%;
+  border-radius: var(--pill);
+  background: var(--text-muted);
+  animation: aktualisierung-lauf 1.1s var(--ease) infinite;
+}
+
+@keyframes aktualisierung-lauf {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(357%);
+  }
+}
+
+/*
+  Bei reduzierter Bewegung steht die Wanderung still — und ein stehendes Stück
+  von 28 Prozent läse sich als „bei einem Viertel“. Der Balken wird deshalb
+  ganz gefüllt und blaß: er sagt dann nur noch, daß etwas läuft, und das ist
+  in diesem Fall alles, was bekannt ist. Dieselbe Lösung wie beim Streifen
+  eines laufenden Auftrags weiter oben.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .aktualisierung-lauf {
+    width: 100%;
+    background: var(--border-strong);
   }
 }

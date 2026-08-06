@@ -57,6 +57,12 @@ fn host(
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        // Die Aktualisierung fragt beim Start bei GitHub nach und spielt auf
+        // Wunsch ein; `process` liefert nur den Neustart danach. Beide reden
+        // ausschließlich mit der Oberfläche — hier ist nichts anzumelden
+        // außer den Plugins selbst.
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .setup(|app| {
             /*
               Wo die Datenbank liegt, entscheidet das Betriebssystem und nicht
