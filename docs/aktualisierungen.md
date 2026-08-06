@@ -127,6 +127,26 @@ Veröffentlichung — geht weiterhin mit `npm run app:build` beziehungsweise
 `npm run app:build:win`. Diese Pakete sind unsigniert und taugen deshalb nicht
 als Aktualisierung; der Weg dorthin führt über den Tag.
 
+Der Befehl endet dabei mit einer roten Zeile, und das ist erwartbar:
+
+```
+A public key has been found, but no private key. Make sure to set `TAURI_SIGNING_PRIVATE_KEY` environment variable.
+```
+
+Sobald ein öffentlicher Schlüssel in der Konfiguration steht, will Tauri das
+Updater-Paket auch signieren und bricht ohne den privaten ab. Die Meldung kommt
+aber **nach** dem Packen: `Milch.app`, die `.dmg` und das
+`Milch.app.tar.gz` liegen fertig da, nur die `.sig` daneben fehlt. Wer sie
+loswerden oder das Updater-Paket lokal signiert haben will, gibt den Schlüssel
+für den einen Aufruf mit:
+
+```bash
+TAURI_SIGNING_PRIVATE_KEY="$(cat ~/.tauri/milch.key)" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" npm run app:build
+```
+
+Für den gewöhnlichen Blick aufs Paket braucht es das nicht — dann ist die rote
+Zeile schlicht zu überlesen.
+
 ## Was beim ersten Start passiert
 
 Weil die Pakete nicht beim Betriebssystem-Hersteller signiert sind, warnen macOS
