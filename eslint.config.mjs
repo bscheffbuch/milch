@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Baugut von Rust. Darin liegt unter anderem die eingebackene Oberfläche
+    // noch einmal als Datei — geprüft wäre sie ein zweites Mal dieselbe, und
+    // die Prüfung stolperte über das, was der Bau daraus gemacht hat.
+    "src-tauri/target/**",
   ]),
 ]);
 

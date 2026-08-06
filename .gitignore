@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Die Datenbank beim Entwickeln. Der Schrägstrich vorn ist nicht schmückend:
+# ohne ihn ist auch `lib/data/` gemeint — samt allem, was dort an Quelltext
+# liegt. Was Werkzeuge nicht sehen, formatieren und prüfen sie auch nicht.
+/data/
+
+# tauri — Baugut und generierte Berechtigungsschemata
+/src-tauri/target/
+/src-tauri/gen/

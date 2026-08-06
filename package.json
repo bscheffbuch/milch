@@ -4,21 +4,32 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "data": "cargo run --manifest-path src-tauri/Cargo.toml --bin serve --features dev-serve",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "app": "tauri dev",
+    "app:build": "tauri build",
+    "app:build:win": "tsx scripts/build-windows.ts",
+    "lint": "eslint",
+    "seed": "tsx scripts/seed.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "tsx scripts/check.ts"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-dialog": "^2.7.2",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@tauri-apps/cli": "^2.11.4",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
+    "tsx": "^4.23.4",
     "typescript": "^5"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Was das Fenster darf. Nur das Nötigste: die eigene Anweisung an die Datenschicht — die läuft ohnehin über `invoke` und braucht hier nichts — und die beiden Dateiauswahlen der Einstellungen. Alles Weitere, was Tauri anbietet, bleibt zu.",
+  "windows": ["main"],
+  "permissions": ["core:default", "dialog:allow-open", "dialog:allow-save"]
+}

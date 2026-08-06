@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Milch — Alpabrechnung
 
-## Getting Started
+Milchmenge, Messungen, Behandlungen und die Käseabrechnung einer Alpsaison.
+Ein Programm für den eigenen Rechner: kein Konto, kein Server, keine Wolke.
+Alles steht in **einer** Datei, und Sichern heißt, diese Datei zu kopieren.
 
-First, run the development server:
+## Aufbau
+
+Zwei Hälften, eine Naht:
+
+|                  |                                                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Oberfläche**   | Next.js, statisch gebaut (`output: "export"`). Hier wird auch gerechnet — der Rechenkern in `lib/calc/` bekommt die ganze Saison und gibt die fertige Auswertung zurück. |
+| **Datenschicht** | Rust mit SQLite, in `src-tauri/`. Sie liest und schreibt, mehr nicht.                                                                                                    |
+
+Dazwischen liegt genau ein Aufruf: ein Name, eine Nutzlast, der vollständige
+Stand zurück. Er endet immer in `Store::run` — im fertigen Programm über Tauris
+IPC, beim Entwickeln über einen kleinen HTTP-Dienst auf `127.0.0.1:8787`, weil
+ein gewöhnlicher Browser kein IPC hat. Es gibt keine zweite Datenschicht in
+JavaScript, die auseinanderlaufen könnte.
+
+## Entwickeln
+
+Im Programmfenster — so, wie es die Alp später auch benutzt:
+
+```bash
+npm run app
+```
+
+Im Browser, mit den Entwicklerwerkzeugen. Dann braucht es zwei Fenster, weil
+die Datenschicht getrennt läuft:
+
+```bash
+npm run data
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Prüfen:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+```
 
-## Learn More
+Dazu die Tests der Datenschicht — `cargo test` in `src-tauri/`.
 
-To learn more about Next.js, take a look at the following resources:
+Gegenrechnen, ohne das Fenster zu öffnen: `npm run check` rechnet die aktive
+Saison durch und schreibt die Kennzahlen ins Terminal. Es fragt die
+Datenschicht über denselben Port wie die Oberfläche, `npm run data` muß also
+laufen. Mit einem Datum als Argument gilt dieses als Stichtag.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Bauen
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run app:build
+```
 
-## Deploy on Vercel
+Baut die Oberfläche nach `out/`, übersetzt die Datenschicht und packt beides
+zusammen. Auf dem Mac entstehen `Milch.app` und ein DMG unter
+`src-tauri/target/release/bundle/`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Die Windows-Fassung entsteht ebenfalls auf dem Mac:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run app:build:win
+```
+
+Daraus wird `milch.exe` und daneben `Milch_<Fassung>_x64-setup.exe`, beides
+unter `src-tauri/target/x86_64-pc-windows-msvc/release/`. Einmalig einzurichten
+sind dafür `rustup target add x86_64-pc-windows-msvc`,
+`cargo install cargo-xwin` und `brew install makensis`; fehlt NSIS, entsteht nur
+die Programmdatei. Um die drei Fallstricke dieses Baus kümmert sich
+`scripts/build-windows.ts` — dort steht auch, welche es sind. Signiert wird
+nicht: Windows zeigt beim ersten Start eine Warnung. Auf dem Zielrechner setzt
+das Programm WebView2 voraus, das unter Windows 11 und aktuellem Windows 10
+mitgeliefert wird.
+
+Für Linux gilt weiterhin: denselben Befehl (`npm run app:build`) auf einem
+Linux-Rechner ausführen. Der Quelltext ist für alle drei derselbe.
+
+## Im Heimnetz freigeben
+
+Gemolken wird im Stall, gerechnet am Rechner — dazwischen liegt der Weg zurück
+in die Hütte. Deshalb kann das Programm dieselbe Oberfläche im Heimnetz
+ausliefern: in den Einstellungen unter **Freigabe** einschalten, den QR-Code mit
+dem Telefon abfilmen, und die Messwerte lassen sich am Melkstand eintragen.
+
+Was dabei geschieht, steht auch in der Oberfläche:
+
+- Ein kleiner Dienst horcht auf Port **8788** und liefert genau zwei Dinge aus:
+  die gebaute Oberfläche — dieselben Dateien, die auch im Programmfenster
+  stehen — und `POST /call`, denselben einen Aufruf. Es gibt keinen zweiten
+  Datenbestand; das Telefon schreibt in die Datei auf dem Rechner.
+- Die Freigabe ist **aus**, bis jemand sie einschaltet, sie endet mit dem
+  Programm, und sie merkt sich nichts. Solange sie läuft, hat **jeder im selben
+  Netz** vollen Zugriff — ein Kennwort gibt es nicht.
+- Die Adresse wird nicht geraten, sondern beim Betriebssystem erfragt (welche
+  Netzwerkkarte trüge den Weg nach draußen). Sie steht als QR-Code daneben,
+  damit niemand vier Zahlen abtippen muß.
+
+Die Oberfläche ist bis zur Telefonbreite durchgezeichnet: die Navigation steht
+fort und kommt über den drei Strichen in der linken oberen Ecke ganz nach vorn,
+die Werkzeugleiste am Rand wird zum Blatt von unten, und „Hinzufügen“ schwebt
+über der Tabelle rechts unten, wo der Daumen liegt.
+
+## Wo die Daten liegen
+
+Den Ort bestimmt das Betriebssystem, nicht das Programm:
+
+|                 |                                                       |
+| --------------- | ----------------------------------------------------- |
+| macOS           | `~/Library/Application Support/de.alp.milch/milch.db` |
+| Windows         | `%APPDATA%\de.alp.milch\milch.db`                     |
+| Linux           | `~/.local/share/de.alp.milch/milch.db`                |
+| beim Entwickeln | `data/milch.db` im Projektordner                      |
+
+Der Ordner gehört nicht zum Programm, sondern steht daneben: Eine neue Fassung
+darüberzuinstallieren rührt ihn nicht an, und auch der Windows-Installer löscht
+beim Aktualisieren nichts — er tut das nur, wenn man das Programm von Hand
+entfernt _und_ dabei „Anwendungsdaten löschen“ anhakt. Woran der Ordner hängt,
+ist die Kennung `de.alp.milch`; wer sie ändert, lässt den bisherigen Bestand
+unter dem alten Namen zurück. Eine Prüfung hält sie deshalb fest.
+
+Die Einstellungen zeigen den vollständigen Pfad an. Wer zwei Bestände
+nebeneinander führen will — einen echten und einen zum Ausprobieren —, setzt
+`MILCH_DB` auf eine andere Datei; das sticht alles andere.
+
+Sicherungen legt das Programm daneben ab und überschreibt dabei nie eine
+ältere. Beim Wiederherstellen wird die neue Datei zuerst geprüft und der
+bisherige Stand gesichert: Ist die Datei keine Alpabrechnung oder ist sie
+beschädigt, bleibt alles stehen, wie es ist.
