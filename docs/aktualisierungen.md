@@ -8,7 +8,7 @@ wenn alles aktuell ist — ein Normalzustand braucht keine Anzeige, gemeldet wir
 nur, was eine Entscheidung verlangt. Aus demselben Grund ist auch ein
 gescheiterter Abruf beim Start stumm: wer das Programm öffnet, wartet auf die
 Saison und nicht auf eine Auskunft über GitHub. Erst wenn jemand selbst auf
-„Jetzt einspielen“ gedrückt hat und *das* scheitert, steht eine Meldung da.
+„Jetzt einspielen“ gedrückt hat und _das_ scheitert, steht eine Meldung da.
 
 Beteiligt sind vier Stellen:
 
@@ -84,8 +84,15 @@ gewählt, das Secret muss aber trotzdem existieren, weil der Build sonst auf ein
 interaktive Abfrage wartet und im CI hängen bleibt:
 
 ```bash
-gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD --body ""
+printf '' | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD
 ```
+
+Der naheliegende Weg über `--body ""` funktioniert nicht: `gh` hält den leeren
+Wert für „nichts angegeben" und fragt trotzdem interaktiv nach. Über die
+Standardeingabe geht es. Streng nötig ist das Secret übrigens nicht — fehlt es,
+setzt der Workflow eine leere Zeichenkette ein, und genau die ist ja das
+richtige Kennwort. Es ausdrücklich anzulegen ist trotzdem sauberer, weil man
+sonst später nicht unterscheiden kann, ob es leer ist oder vergessen wurde.
 
 Wichtig: **Geht der private Schlüssel verloren, lässt sich für alle bereits
 installierten Kopien nie wieder eine Aktualisierung ausliefern.** Sie prüfen
@@ -119,16 +126,41 @@ bevor irgendetwas gebaut wird. Von Hand baut man weiterhin über `app:build` —
 der Eintrag ist ausschließlich für den Workflow da und gehört nicht
 weggeräumt.
 
-Der Tag `v…` löst den Workflow aus. Er baut vier Pakete — macOS auf Apple
-Silicon, macOS auf Intel, Linux und Windows — und legt sie an einem **Release im
-Entwurfsstatus** ab. Erst wenn der Entwurf von Hand veröffentlicht wird, ist die
-`latest.json` unter `releases/latest/download/` erreichbar und die installierten
-Kopien finden die Aktualisierung. Das ist Absicht: solange ein Job noch läuft
-oder fehlgeschlagen ist, soll niemand ein halbes Release mit fehlenden
-Plattformen angeboten bekommen.
+Der Tag `v…` soll den Workflow auslösen — verlassen sollte man sich darauf
+nicht. Beim ersten Release ist der Push des Tags zweimal hintereinander
+folgenlos geblieben, obwohl Actions eingeschaltet waren und `release.yml` am Tag
+lag; GitHub hat schlicht keinen Lauf angelegt. Deshalb nach dem Push einmal
+nachsehen und, wenn nichts läuft, von Hand anstoßen:
+
+```bash
+gh run list --workflow release.yml --limit 3
+```
+
+```bash
+gh workflow run release.yml --ref v0.1.0
+```
+
+Das ist kein Notbehelf mit anderem Ergebnis: der Workflow hört zusätzlich auf
+`workflow_dispatch`, und `github.ref_name` ist dabei derselbe Tag. Es entstehen
+also derselbe Release-Name und derselbe Tag wie beim automatischen Lauf.
+
+Der Workflow baut vier Pakete — macOS auf Apple Silicon, macOS auf Intel, Linux
+und Windows — und legt sie an einem **Release im Entwurfsstatus** ab. Erst wenn
+der Entwurf von Hand veröffentlicht wird, ist die `latest.json` unter
+`releases/latest/download/` erreichbar und die installierten Kopien finden die
+Aktualisierung. Das ist Absicht: solange ein Job noch läuft oder fehlgeschlagen
+ist, soll niemand ein halbes Release mit fehlenden Plattformen angeboten
+bekommen.
+
+Am fertigen Entwurf hängen die Installationspakete (`.dmg` für beide
+Mac-Architekturen, `.AppImage`, `.deb`, `.rpm`, `.exe`, `.msi`), daneben die
+Updater-Pakete (`.app.tar.gz`) und zu jedem davon eine `.sig`, und schließlich
+die `latest.json`. Die `.dmg` haben bewusst keine Signatur: über sie
+installiert man das erste Mal von Hand, aktualisiert wird nicht über sie.
 
 Der Text, den man im Release-Entwurf einträgt, ist genau der Text, den die Karte
-unten links im Programm anzeigt.
+unten links im Programm anzeigt. Bis dahin steht dort der Platzhalter aus
+`release.yml`.
 
 Auf dem eigenen Rechner bauen — für einen Blick auf das Paket, nicht für eine
 Veröffentlichung — geht weiterhin mit `npm run app:build` beziehungsweise
