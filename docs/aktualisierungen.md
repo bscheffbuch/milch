@@ -111,6 +111,14 @@ npm version patch
 git push --follow-tags
 ```
 
+In `package.json` steht neben `app:build` noch ein Eintrag `"tauri": "tauri"`.
+Der sieht überflüssig aus und ist es nicht: `tauri-action` ruft im Workflow fest
+`npm run tauri build` auf und kennt unsere eigenen Namen nicht. Fehlt die Zeile,
+brechen alle vier Jobs sofort mit `npm error Missing script: "tauri"` ab, noch
+bevor irgendetwas gebaut wird. Von Hand baut man weiterhin über `app:build` —
+der Eintrag ist ausschließlich für den Workflow da und gehört nicht
+weggeräumt.
+
 Der Tag `v…` löst den Workflow aus. Er baut vier Pakete — macOS auf Apple
 Silicon, macOS auf Intel, Linux und Windows — und legt sie an einem **Release im
 Entwurfsstatus** ab. Erst wenn der Entwurf von Hand veröffentlicht wird, ist die

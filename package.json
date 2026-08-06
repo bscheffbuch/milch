@@ -9,6 +9,7 @@
     "app": "tauri dev",
     "app:build": "tauri build",
     "app:build:win": "tsx scripts/build-windows.ts",
+    "tauri": "tauri",
     "lint": "eslint",
     "seed": "tsx scripts/seed.ts",
     "test": "tsx --test test/*.test.ts",
