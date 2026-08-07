@@ -68,7 +68,7 @@ const CASCADE = 28;
 
 /*
   Bis zu dieser Breite liegt die Ablage unten als Blatt — dieselbe Schwelle wie
-  im Stylesheet, und sie muß hier noch einmal stehen: das Ziehen zur Seite, mit
+  im Stylesheet, und sie muss hier noch einmal stehen: das Ziehen zur Seite, mit
   dem sich eine Fläche am Rechner aus der Spalte löst, hat am Telefon keinen
   Sinn. Dort ist dieselbe Bewegung der Wisch nach oben und unten.
 */
@@ -150,7 +150,7 @@ interface DockApi {
   /**
    * Der ganze Reihenkasten auf einmal. Am Telefon ist die Ablage ein Blatt und
    * kein Stapel einzeln zu bedienender Flächen: der Wisch zieht auf, was darin
-   * steht, und legt auch alles wieder hin. Zöge er nur die angefaßte Fläche,
+   * steht, und legt auch alles wieder hin. Zöge er nur die angefasste Fläche,
    * bliebe neben der Tagesspalte eine halb ausgefüllte Erfassungsmaske als
    * Spalt liegen — und das aufgezogene Blatt stünde auf zwei Zuständen.
    */
@@ -468,7 +468,7 @@ export function DockSurface({
 
   /*
     Eine Fläche gehört der Seite, die sie aufmacht: wer die Seite verlässt,
-    läßt auch die Fläche zurück. Vorher überlebte eine Maske den Seitenwechsel,
+    lässt auch die Fläche zurück. Vorher überlebte eine Maske den Seitenwechsel,
     weil nur die Tagesspalte sich beim Ausbau abmeldete — die Ablage hielt ihre
     Spalte dann weiter frei für etwas, das gar nicht mehr da war. Auf der Kuh-
     und der Bauernseite stand so ein breiter leerer Streifen neben der Tabelle,
@@ -477,7 +477,7 @@ export function DockSurface({
 
     Anmelden und Abmelden stehen deshalb in einer einzigen Wirkung. Für eine
     Maske ist das Anmelden nur eine Bestätigung — geöffnet hat sie der Knopf,
-    sonst stünde hier gar nichts —, aber es muß dabeistehen: React führt eine
+    sonst stünde hier gar nichts —, aber es muss dabeistehen: React führt eine
     Wirkung zur Prüfung zweimal aus, und ein Abmelden ohne Anmelden nähme die
     Fläche beim zweiten Durchgang gleich wieder weg.
   */
@@ -524,14 +524,14 @@ export function DockSurface({
     Dieselbe Stelle, zwei Bewegungen: am Rechner zieht der Kopf die Fläche aus
     der Spalte, am Telefon zieht er das Blatt auf und wieder hin. Welche gilt,
     entscheidet die Breite im Augenblick des Griffs — nicht ein Zustand, der
-    beim ersten Anstrich schon feststehen müßte und dann auf dem Server anders
+    beim ersten Anstrich schon feststehen müsste und dann auf dem Server anders
     hieße als im Browser.
 
     Das Blatt hängt dabei am Finger, es springt nicht auf eine Schwelle hin um:
     gezogen wird die Höhe der Reihe selbst, und weil die Reihe am unteren Rand
     klebt, wandert ihre Oberkante genau so weit wie der Daumen. Losgelassen
     entscheidet die Hälfte der Strecke, wohin es fällt — wer nur ein Stück
-    aufzieht und wieder losläßt, hat es nicht aufziehen wollen.
+    aufzieht und wieder loslässt, hat es nicht aufziehen wollen.
 
     Erst beim Absetzen bekommt die Ablage den neuen Stand gesagt, und zwar in
     demselben Zug, in dem die Handhöhe wieder abgeräumt wird: stünde die Höhe

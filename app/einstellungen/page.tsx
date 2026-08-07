@@ -487,7 +487,7 @@ export default function Page() {
             Der Schalter für das Sichern von selbst. Er steht hier und nicht
             weiter oben, weil er dasselbe betrifft wie die Liste darunter: was
             von selbst entsteht, liegt in derselben Reihe wie das von Hand
-            Angelegte und läßt sich genauso zurückholen.
+            Angelegte und lässt sich genauso zurückholen.
           */}
           <form action={setAutoBackup} className="row" style={{ marginBottom: 12 }}>
             <input type="hidden" name="on" value={db.auto ? "0" : "1"} />

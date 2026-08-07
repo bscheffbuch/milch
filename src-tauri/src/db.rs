@@ -201,11 +201,11 @@ pub fn open(path: &Path) -> rusqlite::Result<Connection> {
 /// bestehende Tabelle nicht an — was sich an einer schon angelegten Datenbank
 /// ändern soll, muss deshalb hier stehen.
 ///
-/// Fassung 2: Milch wird in Litern geführt, nicht in Kilogramm. Umgerechnet
+/// Version 2: Milch wird in Litern geführt, nicht in Kilogramm. Umgerechnet
 /// wird nichts — die Zahlen waren immer schon die abgelesenen Litermengen, nur
 /// die Spalten waren falsch beschriftet.
 ///
-/// Fassung 3: Das Ende einer Behandlung darf offen bleiben. SQLite kann eine
+/// Version 3: Das Ende einer Behandlung darf offen bleiben. SQLite kann eine
 /// Spalte nicht von `NOT NULL` befreien — die Tabelle wird deshalb neben der
 /// alten neu gebaut und der Inhalt hinübergeschrieben.
 fn migrate(conn: &Connection) -> rusqlite::Result<()> {
@@ -294,7 +294,7 @@ mod tests {
     /// hängt sie an den Ordner des Betriebssystems an. Wer sie ändert, legt den
     /// bisherigen Bestand still — er läge dann unter dem alten Namen und das
     /// Programm suchte unter dem neuen. Ein neues Bündel darüberzuinstallieren
-    /// oder auf eine neue Fassung zu heben rührt den Ordner dagegen nicht an;
+    /// oder auf eine neue Version zu heben rührt den Ordner dagegen nicht an;
     /// nur ein von Hand angehaktes „Anwendungsdaten löschen“ beim Entfernen tut
     /// das. Diese Zeile hält die Kennung fest.
     #[test]

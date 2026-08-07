@@ -118,7 +118,7 @@ export default function Aktualisierung() {
 
     /*
       Der Neustart steht mit Absicht außerhalb des Blocks darüber: hier ist
-      die neue Fassung bereits eingespielt. Scheiterte nur noch das Neustarten
+      die neue Version bereits eingespielt. Scheiterte nur noch das Neustarten
       und stünde dann „fehlgeschlagen“ da, wäre das schlicht falsch — es fehlt
       dann bloß der letzte Schritt, und den kann jeder selbst tun.
 
@@ -158,7 +158,7 @@ export default function Aktualisierung() {
     );
   }
 
-  // Eingespielt ist die neue Fassung bereits, es fehlt nur der Neustart. Das
+  // Eingespielt ist die neue Version bereits, es fehlt nur der Neustart. Das
   // ist kein Fehlschlag und trägt deshalb auch nicht dessen Ton.
   if (zustand.art === "neustart") {
     return (
@@ -167,7 +167,7 @@ export default function Aktualisierung() {
           <b>Die Aktualisierung ist eingespielt</b>
           <span className="small muted">
             Bitte das Programm einmal schließen und wieder öffnen — dann läuft
-            die neue Fassung.
+            die neue Version.
           </span>
         </div>
       </div>

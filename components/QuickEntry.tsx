@@ -12,7 +12,7 @@ import { bellOrder } from "@/lib/view";
   Eintippen statt Ausfüllen
   =========================
 
-  Am Meßblatt sitzt man und liest ab; im Melkstand steht man und tippt. Dort
+  Am Messblatt sitzt man und liest ab; im Melkstand steht man und tippt. Dort
   hat man die Kühe eines Hofs nacheinander vor sich, kennt die Glocke und die
   Menge und will dazwischen nichts anfassen müssen — keine Maus, kein Suchen
   der nächsten Zeile in einer Tabelle mit siebzig Zeilen.
@@ -24,7 +24,7 @@ import { bellOrder } from "@/lib/view";
   eingetragen ist.
 
   Gespeichert wird sofort und je Kuh — dieselbe Anweisung wie beim Blatt, nur
-  mit einer einzigen Kuh darin. Das andere Gemelk muß dabei mitgeschickt
+  mit einer einzigen Kuh darin. Das andere Gemelk muss dabei mitgeschickt
   werden: die Anweisung schreibt beide Werte einer Kuh, und was nicht
   mitkommt, gilt als nicht gemessen.
 */
@@ -105,7 +105,7 @@ export default function QuickEntry({
 
   /*
     Von der Glocke zur Menge — mit dem, was dort schon steht, und zwar
-    markiert: wer die Kuh noch einmal mißt, tippt einfach die neue Zahl
+    markiert: wer die Kuh noch einmal misst, tippt einfach die neue Zahl
     darüber; wer nur nachsieht, geht mit der Eingabetaste weiter.
 
     Markiert werden kann aber erst, was auch dasteht. React schreibt den neuen

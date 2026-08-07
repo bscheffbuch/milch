@@ -59,7 +59,7 @@ unten unter „Was beim ersten Start passiert".
 `src-tauri/capabilities/default.json` ein. Fehlt `process:default` dort, baut
 alles anstandslos durch, die Aktualisierung lädt und installiert sich auch — und
 erst der Neustart danach bricht zur Laufzeit an der Rechteprüfung ab. Also genau
-in dem Moment, in dem die neue Fassung schon auf der Platte liegt und niemand
+in dem Moment, in dem die neue Version schon auf der Platte liegt und niemand
 mehr eine Fehlermeldung erwartet.
 
 Die Komponente fängt diesen Fall ab: scheitert nur noch der Neustart, steht dort
@@ -89,8 +89,8 @@ printf '' | gh secret set TAURI_SIGNING_PRIVATE_KEY_PASSWORD
 
 Der naheliegende Weg über `--body ""` funktioniert nicht: `gh` hält den leeren
 Wert für „nichts angegeben" und fragt trotzdem interaktiv nach. Über die
-Standardeingabe geht es. Streng nötig ist das Secret übrigens nicht — fehlt es,
-setzt der Workflow eine leere Zeichenkette ein, und genau die ist ja das
+stdin geht es. Streng nötig ist das Secret übrigens nicht — fehlt es,
+setzt der Workflow einen leeren String ein, und genau die ist ja das
 richtige Kennwort. Es ausdrücklich anzulegen ist trotzdem sauberer, weil man
 sonst später nicht unterscheiden kann, ob es leer ist oder vergessen wurde.
 
@@ -105,8 +105,8 @@ Sperrbildschirm.
 
 ## Eine Version veröffentlichen
 
-Zuerst den Text zur neuen Fassung in `docs/release.md` schreiben — er wird beim
-Bauen mit eingesammelt und läßt sich hinterher nicht mehr überall nachbessern
+Zuerst den Text zur neuen Version in `docs/release.md` schreiben — er wird beim
+Bauen mit eingesammelt und lässt sich hinterher nicht mehr überall nachbessern
 (siehe unten). Stehen dort Dateinamen mit der alten Versionsnummer, gehören sie
 mitgezogen.
 
@@ -163,7 +163,7 @@ Updater-Pakete (`.app.tar.gz`) und zu jedem davon eine `.sig`, und schließlich
 die `latest.json`. Die `.dmg` haben bewusst keine Signatur: über sie
 installiert man das erste Mal von Hand, aktualisiert wird nicht über sie.
 
-## Der Text zur Fassung
+## Der Text zur Version
 
 Er steht in `docs/release.md` und wird **vor** dem Tag geschrieben. Der Workflow
 liest die Datei und gibt sie an zwei Stellen weiter: auf die Release-Seite und
@@ -172,14 +172,14 @@ in die `latest.json`, aus der ihn die Karte unten links im Programm nimmt.
 Daraus folgt die Falle: Wer den Entwurf nachträglich in der GitHub-Oberfläche
 umschreibt, ändert nur die Seite. Die `latest.json` liegt als fertige Datei am
 Release und wird davon nicht berührt — die Karte zeigt weiterhin den alten
-Text. Wer nachbessert, muß die `latest.json` also mit ändern und neu hochladen,
+Text. Wer nachbessert, muss die `latest.json` also mit ändern und neu hochladen,
 oder gleich die Datei im Repository richtigstellen und neu bauen.
 
 Weil derselbe Text in der Karte landet, gehört er kurz gehalten. Die Karte ist
 schmal, wertet kein Markdown aus und zeigt nur Zeilenumbrüche; Überschriften und
-Tabellen stehen dort als Zeichen da, was sie sind. Was ausführlich sein muß —
+Tabellen stehen dort als Zeichen da, was sie sind. Was ausführlich sein muss —
 welche Datei man lädt, was beim ersten Start passiert — steht besser in der
-README und wird verlinkt. Die erste Fassung macht davon eine Ausnahme: bei ihr
+README und wird verlinkt. Die erste Version macht davon eine Ausnahme: bei ihr
 sieht niemand eine Karte, weil es nichts gibt, was sich aktualisieren könnte.
 
 Auf dem eigenen Rechner bauen — für einen Blick auf das Paket, nicht für eine
@@ -247,7 +247,7 @@ ersten echten Aktualisierung also bitte einmal nachsehen.
   kleinen Endpunkt, der die Anfrage weiterreicht.
 - **Unter Linux aktualisiert sich nur das AppImage selbst.** Die ebenfalls
   gebauten `.deb`- und `.rpm`-Pakete kann der Updater nicht ersetzen; wer sie
-  benutzt, aktualisiert über die Paketverwaltung.
+  benutzt, aktualisiert über den Paketmanager.
 - **Ein Downgrade ist nicht vorgesehen.** Der Updater vergleicht die Versionen
   und bietet nur Höheres an. Ein zurückgezogenes Release muss also durch ein
   neues, höheres ersetzt werden, nicht durch das Wiederveröffentlichen des

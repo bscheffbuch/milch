@@ -9,7 +9,7 @@ angefasst wird; was fertig und geprüft ist, wandert irgendwann ganz heraus.
       Teile sind einzeln geprüft (siehe unten) — was fehlt, ist der Weg von Hand:
       im gebauten Programm unter Einstellungen → Freigabe einschalten, den
       QR-Code abfilmen, auf dem Telefon eine Messung eintragen und im
-      Programmfenster nachsehen, daß der Wert dort steht. Von hier aus ist das
+      Programmfenster nachsehen, dass der Wert dort steht. Von hier aus ist das
       nicht zu machen: es braucht einen Klick im Programmfenster, und der
       Zugriff auf den Bildschirm ist für dieses Programm nicht erteilt.
 
@@ -23,10 +23,10 @@ _Zur Zeit nichts._
 
 - [x] **Eine eigene Auswahlliste für das ganze Programm — die des Betriebssystems
       ist überall verschwunden.** Am 06.08.2026 auf Wunsch des Benutzers. Der
-      Anlaß war die Kuhwahl beim Eintragen einer Behandlung: dort standen drei
+      Anlass war die Kuhwahl beim Eintragen einer Behandlung: dort standen drei
       Kästen untereinander — Bauer wählen, suchen, Kuh wählen —, wo eine Frage
       gestellt wird. Jetzt ist es ein Feld: ohne Eingabe stehen die Bauern
-      darin, jeder mit der Zahl seiner Kühe und einem Zeichen, daß es
+      darin, jeder mit der Zahl seiner Kühe und einem Zeichen, dass es
       weitergeht; tippt man los, wird über alle Kühe der Alp gesucht und die
       Treffer stehen unter dem Namen ihres Bauern; ist man bei einem Bauern
       drin, führt die oberste Zeile wieder heraus. Dieselbe Liste ersetzt alle
@@ -48,7 +48,7 @@ _Zur Zeit nichts._
       Größen statt drei: die Kennzeichnung `chip` war heimlich eine dritte
       geworden, wo sie als Knopf benutzt wurde. Solche Gruppen — „einmalig /
       mehrere Gemelke / läuft noch", die Monatsleiste, die Bauernfilter — sind
-      zu einer Fläche mit einem Rahmen zusammengefaßt, in der die gewählte
+      zu einer Fläche mit einem Rahmen zusammengefasst, in der die gewählte
       Möglichkeit über Fläche und Fettung heraussticht, nie über die Farbe.
       Knöpfe behalten ihre runde Form, nehmen aber dieselbe Höhe und dieselbe
       Polsterung nach oben und unten wie ein Eingabefeld, damit beide
@@ -69,10 +69,10 @@ _Zur Zeit nichts._
       im alten kommen die Zeichenketten `vor-messung` und `vor-loeschen` nicht
       vor, im neuen beide, dazu `vor-wiederherstellung` und `VACUUM INTO`. Nach
       dem Start des neuen Programms steht in der Datenbank aufs Stück dasselbe
-      wie vorher: 5 Bauern, 71 Kühe, 2 Gänge, 70 Meßwerte, 1 Behandlung. Kein
+      wie vorher: 5 Bauern, 71 Kühe, 2 Gänge, 70 Messwerte, 1 Behandlung. Kein
       Absturzbericht. Nebenbei bemerkt: das Journal wird beim Beenden nicht
       zusammengelegt — die Hauptdatei ist immer noch 4096 Byte groß und das
-      `-wal` immer noch 1,4 MB. Schadet nichts, heißt aber, daß eine Kopie von
+      `-wal` immer noch 1,4 MB. Schadet nichts, heißt aber, dass eine Kopie von
       Hand weiterhin nur mit allen drei Dateien zusammen etwas taugt.
 
 - [x] **Nachgemessen, ob der Bestand die Neuinstallation wirklich übersteht — und
@@ -83,10 +83,10 @@ _Zur Zeit nichts._
       schon überdauert. Die Hauptdatei `milch.db` ist dort 4096 Byte groß, das
       `-wal` daneben 1,4 MB — der ganze Bestand steht also im Journal und noch
       nicht in der Hauptdatei. Wie sehr das zählt, zeigte die Probe: `milch.db`
-      allein in einen anderen Ordner kopiert läßt sich nicht einmal öffnen
+      allein in einen anderen Ordner kopiert lässt sich nicht einmal öffnen
       („unable to open database file"), und was drinsteht, ist eine einzige Seite
       ohne eine einzige Tabelle. Gelesen mit ihrem Journal zusammen sind es
-      5 Bauern, 71 Kühe, 2 Gänge, 70 Meßwerte und 1 Behandlung. Genau diese Zahlen
+      5 Bauern, 71 Kühe, 2 Gänge, 70 Messwerte und 1 Behandlung. Genau diese Zahlen
       stehen auch in der jüngsten Sicherung (`milch-2026-08-05-1829.db`) und in der
       Datei, die im Ordner „Downloads" liegt — `VACUUM INTO` schreibt also
       tatsächlich den Stand mitsamt Journal, und zwar in eine einzelne Datei ohne
@@ -94,9 +94,9 @@ _Zur Zeit nichts._
       dann Bauern und Kühe ohne Messungen), stimmen also auch untereinander.
       Das Ganze noch einmal am laufenden Programm nachgestellt, auf einer
       Wegwerfdatei über `MILCH_DB` und den Entwicklungsdienst: nach zwei
-      geschriebenen Meßwerten enthielt eine Handkopie der Hauptdatei den alten
-      Stand (70 Meßwerte, der neue Wert fehlt), die über die Oberfläche gezogene
-      Sicherung dagegen den neuen (2 Meßwerte, Kuh 1 mit 9,5). Die Wegwerfdatei
+      geschriebenen Messwerten enthielt eine Handkopie der Hauptdatei den alten
+      Stand (70 Messwerte, der neue Wert fehlt), die über die Oberfläche gezogene
+      Sicherung dagegen den neuen (2 Messwerte, Kuh 1 mit 9,5). Die Wegwerfdatei
       und der Dienst sind wieder abgeräumt, die echte Datenbank blieb unangetastet.
 
 - [x] **Die selbsttätigen Sicherungen laufen — im Code.** Am selben Weg geprüft.
@@ -111,7 +111,7 @@ _Zur Zeit nichts._
 
 - [x] **Tag am Telefon als Blatt von unten.** Nach der Skizze des Benutzers: unten guckt ein
       dunkles Blatt mit abgerundeter Kante und Griffleiste hervor („Mi, 05.08.2026 · heute“),
-      das sich mit einem Wisch nach oben ganz aufziehen läßt. Unter 560 Pixeln liegt die
+      das sich mit einem Wisch nach oben ganz aufziehen lässt. Unter 560 Pixeln liegt die
       Ablage nicht mehr rechts, sondern unten: gerundete Kante, Schlagschatten nach oben, je
       Fläche eine Griffleiste. „Weggeklappt“ heißt dort nicht mehr „als Reiter am Rand“,
       sondern „hingelegt“ — das Blatt bleibt als Spalt stehen, der Reiterstreifen und die
@@ -122,7 +122,7 @@ _Zur Zeit nichts._
       Körper der hingelegten Fläche schon da, sonst zöge man einen leeren Kasten auf.
       Losgelassen entscheidet die Hälfte der Strecke, wohin es fällt; ein kurzes Tippen auf
       den Spalt zieht auf. Zwei Dinge waren daran zu richten, nachdem der Benutzer sie
-      gesehen hat: das Zucken am Ende des Zuges kam daher, daß React den neuen Stand erst
+      gesehen hat: das Zucken am Ende des Zuges kam daher, dass React den neuen Stand erst
       nach dem Anstrich verbuchte, in dem die Höhe der Hand schon abgeräumt war — für einen
       Anstrich stand dann das Stylesheet des alten Zustands ohne Höhe da und das Blatt sprang
       auf seine volle Höhe und gleich wieder zurück. Jetzt geht der Stand mit `flushSync`
@@ -147,7 +147,7 @@ _Zur Zeit nichts._
       78 hin und ein Tippen auf den Spalt zieht es wieder auf. Das Kreuz im Kopf bleibt dabei
       ein Knopf und wird nicht zum Griff — beim Andrücken hängt nichts am Finger, und
       geschlossen verschwindet die Ablage ganz; `--blatt-spalt` wird dann wieder vom Dokument
-      genommen, so daß der Fußraum auf die 84 Pixel für die schwebende Handlung zurückfällt.
+      genommen, so dass der Fußraum auf die 84 Pixel für die schwebende Handlung zurückfällt.
       Bei 1280 Pixeln unverändert: Reiter für jede Fläche einzeln, Griffleiste unsichtbar.
       `npm test` 42 von 42, `npm run typecheck` sauber, `npm run check` bei 0,000000 kg,
       eslint unverändert bei zwei bekannten Anmerkungen.
@@ -194,11 +194,11 @@ _Zur Zeit nichts._
       Änderungsmaske jetzt zu, bis ein Schalter sie aufsperrt: `components/Aendern.tsx` legt
       die Maske in ein abgeschaltetes `fieldset`, und ein abgeschaltetes `fieldset` schaltet
       alles ab, was darin steht — Felder, Datumswähler und die Schaltfläche zum Speichern
-      gleich mit. Zugesperrt läßt sich nichts eintippen und nichts absenden, auch nicht mit
-      der Tastatur; sie ist dann auch ruhiger gezeichnet, ohne Feldränder, so daß man ihr
+      gleich mit. Zugesperrt lässt sich nichts eintippen und nichts absenden, auch nicht mit
+      der Tastatur; sie ist dann auch ruhiger gezeichnet, ohne Feldränder, so dass man ihr
       den Zustand ansieht, ohne hineinzufassen. Der Schalter sitzt darüber und nicht darin,
       sonst wäre er mit abgesperrt. Je Maske einer, nicht einer für die ganze Seite — so
-      gibt man nur frei, was man wirklich anfaßt. Nach dem Speichern ist wieder zu: der
+      gibt man nur frei, was man wirklich anfasst. Nach dem Speichern ist wieder zu: der
       Schalter hängt am selben Schlüssel wie die Maske (`lib/formular.ts`), und ändert sich
       der gespeicherte Stand, wird beides neu gebaut. Dahinter liegen jetzt die Stammdaten
       des Bauern und der Kuh, „Auftrieb und Saisonende“ und die Messung samt „Messung
@@ -223,7 +223,7 @@ _Zur Zeit nichts._
       null eingebauten Flächen. Die Anmeldung hängt jetzt nicht mehr an `persistent`, und
       An- und Abmeldung stehen im selben Effekt — im Entwicklungslauf baut React zweimal
       ein, und wer nur abmeldet, meldet einmal zuviel ab. Danach an derselben Stelle
-      `62px 1378px 0px`. Der Nachlauf des Rasters täuscht dabei: mißt man früher als eine
+      `62px 1378px 0px`. Der Nachlauf des Rasters täuscht dabei: misst man früher als eine
       halbe Sekunde nach dem Wechsel, liest man die Spalte mitten in der Bewegung (78,75
       statt 30 Pixel am Reiter). Der alte Inhalt war React selbst. Ein Feld ohne eigenen
       Zustand nimmt seine Vorgabe beim Einbau, und nach einer geglückten Aktion setzt React
@@ -247,7 +247,7 @@ _Zur Zeit nichts._
       einem Ort. Zum Zeigen führt ein eigener Befehl `revealPath`
       (`backup::reveal`): auf dem Mac `open -R`, unter Windows
       `explorer /select,`, sonst `xdg-open` auf den Ordner. Was gezeigt werden
-      darf, ist eng gefaßt — die Datenbank selbst, der Sicherungsordner und was
+      darf, ist eng gefasst — die Datenbank selbst, der Sicherungsordner und was
       darin liegt; alles andere weist `reveal_path` in `lib.rs` ab („… gehört
       nicht zur Datenbank"), denn ein Befehl, der jeden Pfad öffnet, ist ein
       Loch. In den Einstellungen hängen daran drei Knöpfe: „Im Ordner zeigen"
@@ -260,7 +260,7 @@ _Zur Zeit nichts._
       selbst alle 900 ms entstünden sonst hundert Kopien eines Nachmittags.
       Liegen bleiben die zehn jüngsten selbsttätigen (`AUTO_KEEP`, `sweep`);
       von Hand angelegte rührt das Aufräumen nicht an, es sieht nur auf die
-      beiden Vorsätze. Abschalten läßt sich das Ganze mit „Von selbst sichern"
+      beiden Vorsätze. Abschalten lässt sich das Ganze mit „Von selbst sichern"
       (`meta`-Schlüssel `auto_backup`, Befehl `setAutoBackup`). Durchgemessen:
       eine Kopie beim ersten Schreiben in eine Messung und keine bei den drei
       folgenden, eine eigene für eine zweite Messung, von sechzehn blieben
@@ -311,7 +311,7 @@ _Zur Zeit nichts._
       und Gemelk bleiben stehen, über das Schließen der Fläche und über den
       Feierabend hinaus (`localStorage`, Schlüssel `kuh-neu:…`); ungültig
       gewordene Vorgaben — ein Bauer, den es nicht mehr gibt, ein Tag außerhalb
-      der Saison — fallen auf die Voreinstellung zurück. Dafür mußte Reacts
+      der Saison — fallen auf die Voreinstellung zurück. Dafür musste Reacts
       selbsttätiges Zurücksetzen nach der Formularaktion abgelehnt werden
       (`onReset`): es stellte das Auswahlfeld auf seinen ersten Eintrag zurück,
       während der Zustand daneben weiter „abends" hielt — abgeschickt worden
@@ -332,7 +332,7 @@ _Zur Zeit nichts._
       `app/messung/detail.tsx` schreibt 900 ms nach dem letzten Anschlag und
       noch einmal beim Verlassen der Seite (`pagehide` und Abbau); daneben
       steht, wann zuletzt geschrieben wurde. Zwischenspeichern heißt dabei
-      wirklich speichern — kein zweiter Entwurfsbestand. Geprüft, daß der Wert
+      wirklich speichern — kein zweiter Entwurfsbestand. Geprüft, dass der Wert
       wirklich in der Datenbank steht: geändert, Seite neu geladen, Wert war da,
       Kopfzeile hatte mitgerechnet.
 - [x] **Die Herde steht überall in derselben Ordnung: nach Hof, darin nach
@@ -340,14 +340,14 @@ _Zur Zeit nichts._
       stünde die 110 zwischen der 10 und der 12; `bellOrder`/`byFarmerAndBell`
       in `lib/view.ts` richten das für jede Liste zugleich (fünf Tests in
       `test/herde.test.ts`). Der Melkstand liest die Glocken in ihrer
-      Zahlenfolge ab, das Meßblatt tut es jetzt auch.
+      Zahlenfolge ab, das Messblatt tut es jetzt auch.
 - [x] **Neues Programmzeichen: die Glocke des Benutzers.** Die gezeichnete
-      Glocke mit Umriß, Rippen und Edelweiß ist heraus; an ihrer Stelle steht
+      Glocke mit Umriss, Rippen und Edelweiß ist heraus; an ihrer Stelle steht
       die Vorlage des Benutzers — eine kupferne Glocke aus drei Teilen (Öse mit
       Lederverlauf, Körper als eingebettetes Bild in der Glockenform, Klöppel
-      mit Kugelverlauf), ohne Umriß und ohne Grund. `src-tauri/icon.svg` hält
-      sie unverändert und paßt sie nur ein: die Zeichnung mißt 144 × 168, ein
-      Programmzeichen muß quadratisch sein, also sitzt sie mittig in 1024 × 1024
+      mit Kugelverlauf), ohne Umriss und ohne Grund. `src-tauri/icon.svg` hält
+      sie unverändert und passt sie nur ein: die Zeichnung misst 144 × 168, ein
+      Programmzeichen muss quadratisch sein, also sitzt sie mittig in 1024 × 1024
       und füllt 824 in der Höhe — derselbe Anteil wie zuvor. Mit
       `npx tauri icon` erzeugt (`icons/android` und `icons/ios` wieder
       gelöscht) und nachgesehen: bei 1024, 128 und 32 Pixeln steht die Glocke,
@@ -378,12 +378,12 @@ _Zur Zeit nichts._
       einer Seite schwebt rechts unten über der Tabelle — über der Reiterzeile,
       wenn eine da ist. In den Eingabetabellen bleibt die erste Spalte stehen,
       wenn man seitwärts schiebt; der Name in der Gruppenzeile ebenso, wozu er
-      in ein `<span>` mußte (eine Zelle über die volle Breite kann selbst nicht
+      in ein `<span>` musste (eine Zelle über die volle Breite kann selbst nicht
       stehenbleiben). Im Browser bei 375×812 durchgesehen: Kalender mit Blatt
       und mit eingeklappter Reiterzeile, der schwebende Knopf auf fünf Seiten,
       zwei Kennzahlen nebeneinander, die stehende Spalte bei 200 Pixeln
       Seitwärtsversatz — und nirgends schiebt sich die Seite selbst zur Seite
-      (`scrollWidth === clientWidth === 375`). Bei 800 Pixeln gegengeprüft, daß
+      (`scrollWidth === clientWidth === 375`). Bei 800 Pixeln gegengeprüft, dass
       die stehende Spalte am Schreibtisch nichts verändert.
 - [x] **Werte am Diagramm ablesbar.** Zeigt man auf eine Stelle im Verlauf,
       steht dort, was sie bedeutet.
@@ -456,10 +456,10 @@ _Zur Zeit nichts._
       Spalte bleibt den ganzen Zug über eingeklappt, die Zelle bewegt sich um
       keinen Pixel, und ein `MutationObserver` über `.cal` sah nur einen
       einzigen Zustand — kein Zucken, keine zusätzlichen Tage.
-      (Daß das Raster überhaupt mitwandert, ist nachgewiesen: bei 1600 px
+      (Dass das Raster überhaupt mitwandert, ist nachgewiesen: bei 1600 px
       Fensterbreite verschiebt der Wechsel `dock=open`/`rail` eine Tageszelle
       um 45 px.)
-- [x] **Kalender: Tagesspalte vergißt die Wahl des Benutzers.** `setCollapsed`
+- [x] **Kalender: Tagesspalte vergisst die Wahl des Benutzers.** `setCollapsed`
       merkt die Fläche jetzt als von Hand gestellt (`pinned`, auch über
       Sitzungen hinweg), und die Vermutung aus `quiet` tritt dahinter zurück.
       Geprüft: aufgeklappt, Tag gewählt, wieder abgewählt — die Spalte bleibt

@@ -11,7 +11,7 @@ import type { Hosting } from "@/lib/data/types";
 
   Auf dem Tisch steht der Rechner, in der Hand das Telefon. Solange die
   Freigabe läuft, liefert das Programm dieselbe Oberfläche zusätzlich über das
-  Netz aus — kein Konto, keine Wolke, kein zweiter Datenbestand. Der QR-Code
+  Netz aus — kein Konto, keine Cloud, kein zweiter Datenbestand. Der QR-Code
   spart das Abtippen von vier Zahlen und einem Doppelpunkt.
 
   Sie ist aus, bis jemand sie einschaltet, und sie endet mit dem Programm.

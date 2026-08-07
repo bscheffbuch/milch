@@ -458,7 +458,7 @@ export function useActions() {
 
     /*
       Den Ordner öffnet das Betriebssystem, nicht die Oberfläche: eine WebView
-      darf das nicht, und soll es auch nicht. Die Datenschicht läßt dabei nur
+      darf das nicht, und soll es auch nicht. Die Datenschicht lässt dabei nur
       die Datenbank und ihren Sicherungsordner zu.
     */
     const revealPath: Action = async (data) => {

@@ -25,7 +25,7 @@ pub struct Store {
     path: String,
     /// Messungen, für die in diesem Lauf schon von selbst gesichert wurde.
     ///
-    /// Das Meßblatt speichert beim Tippen, und die Tastatureingabe speichert je
+    /// Das Messblatt speichert beim Tippen, und die Tastatureingabe speichert je
     /// Kuh — eine Sicherung je Speichervorgang wären hundert Dateien für einen
     /// Abend. Gesichert wird deshalb beim ersten Zugriff auf eine Messung, und
     /// zwar der Stand davor; die weiteren Änderungen derselben Messung stehen

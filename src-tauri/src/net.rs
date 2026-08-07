@@ -1,7 +1,7 @@
 //! Freigabe im Heimnetz: dieselbe Oberfläche auf dem Telefon.
 //!
 //! Das Programm liegt auf dem Rechner in der Hütte, das Telefon hat man in der
-//! Hand — und der Weg dazwischen soll keine Wolke sein. Solange die Freigabe
+//! Hand — und der Weg dazwischen soll keine Cloud sein. Solange die Freigabe
 //! läuft, hört ein kleiner Dienst auf allen Netzwerkkarten und liefert genau
 //! zwei Dinge aus: die gebaute Oberfläche (dieselben Dateien, die auch im
 //! Programmfenster stehen, hier über Tauris `AssetResolver`) und `POST /call`,

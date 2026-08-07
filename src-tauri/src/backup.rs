@@ -42,7 +42,7 @@ pub const AUTO_KEY: &str = "auto_backup";
 
 /// Tabellen, ohne die eine Datei keine Alpabrechnung ist. Die Prüfung ist grob
 /// mit Absicht — sie soll das versehentlich gewählte Urlaubsfoto abfangen,
-/// nicht eine fremde Fassung des Schemas aussperren.
+/// nicht eine fremde Version des Schemas aussperren.
 const REQUIRED: &[&str] = &[
     "seasons",
     "farmers",

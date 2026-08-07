@@ -1,7 +1,7 @@
 # Milch — Alpabrechnung
 
 Milchmenge, Messungen, Behandlungen und die Käseabrechnung einer Alpsaison.
-Ein Programm für den eigenen Rechner: kein Konto, kein Server, keine Wolke.
+Ein Programm für den eigenen Rechner: kein Konto, kein Server, keine Cloud.
 Alles steht in **einer** Datei, und Sichern heißt, diese Datei zu kopieren.
 
 ## Aufbau
@@ -52,7 +52,7 @@ Dazu die Tests der Datenschicht — `cargo test` in `src-tauri/`.
 
 Gegenrechnen, ohne das Fenster zu öffnen: `npm run check` rechnet die aktive
 Saison durch und schreibt die Kennzahlen ins Terminal. Es fragt die
-Datenschicht über denselben Port wie die Oberfläche, `npm run data` muß also
+Datenschicht über denselben Port wie die Oberfläche, `npm run data` muss also
 laufen. Mit einem Datum als Argument gilt dieses als Stichtag.
 
 ## Bauen
@@ -71,7 +71,7 @@ Die Windows-Fassung entsteht ebenfalls auf dem Mac:
 npm run app:build:win
 ```
 
-Daraus wird `milch.exe` und daneben `Milch_<Fassung>_x64-setup.exe`, beides
+Daraus wird `milch.exe` und daneben `Milch_<Version>_x64-setup.exe`, beides
 unter `src-tauri/target/x86_64-pc-windows-msvc/release/`. Einmalig einzurichten
 sind dafür `rustup target add x86_64-pc-windows-msvc`,
 `cargo install cargo-xwin` und `brew install makensis`; fehlt NSIS, entsteht nur
@@ -86,7 +86,7 @@ Linux-Rechner ausführen. Der Quelltext ist für alle drei derselbe.
 
 ## Veröffentlichen und aktualisieren
 
-Eine neue Fassung entsteht nicht von Hand, sondern an einem Tag:
+Eine neue Version entsteht nicht von Hand, sondern an einem Tag:
 
 ```bash
 npm version patch
@@ -124,7 +124,7 @@ Was dabei geschieht, steht auch in der Oberfläche:
   Netz** vollen Zugriff — ein Kennwort gibt es nicht.
 - Die Adresse wird nicht geraten, sondern beim Betriebssystem erfragt (welche
   Netzwerkkarte trüge den Weg nach draußen). Sie steht als QR-Code daneben,
-  damit niemand vier Zahlen abtippen muß.
+  damit niemand vier Zahlen abtippen muss.
 
 Die Oberfläche ist bis zur Telefonbreite durchgezeichnet: die Navigation steht
 fort und kommt über den drei Strichen in der linken oberen Ecke ganz nach vorn,
@@ -142,7 +142,7 @@ Den Ort bestimmt das Betriebssystem, nicht das Programm:
 | Linux           | `~/.local/share/de.alp.milch/milch.db`                |
 | beim Entwickeln | `data/milch.db` im Projektordner                      |
 
-Der Ordner gehört nicht zum Programm, sondern steht daneben: Eine neue Fassung
+Der Ordner gehört nicht zum Programm, sondern steht daneben: Eine neue Version
 darüberzuinstallieren rührt ihn nicht an, und auch der Windows-Installer löscht
 beim Aktualisieren nichts — er tut das nur, wenn man das Programm von Hand
 entfernt _und_ dabei „Anwendungsdaten löschen“ anhakt. Woran der Ordner hängt,

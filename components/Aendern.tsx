@@ -15,7 +15,7 @@ import { useState } from "react";
   Deshalb liegt jede Änderungsmaske zu, bis man sie ausdrücklich aufsperrt. Das
   besorgt ein `fieldset`, denn ein abgeschaltetes `fieldset` schaltet alles ab,
   was darin steht — Felder, Datumswähler und die Schaltfläche zum Speichern
-  gleich mit. Zugesperrt läßt sich nichts eintippen und nichts absenden, auch
+  gleich mit. Zugesperrt lässt sich nichts eintippen und nichts absenden, auch
   nicht mit der Tastatur.
 
   Der Schalter steht über der Maske und nicht darin: er soll aufsperren und

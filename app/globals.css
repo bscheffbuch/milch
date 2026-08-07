@@ -1079,8 +1079,8 @@ button[aria-pressed="true"] {
   Knopfgröße mitten ins Formular.
 
   Jetzt ist es eine Fläche, in der die Möglichkeiten liegen: der Rahmen gehört
-  der Gruppe, nicht dem einzelnen Knopf. Damit sieht man, daß die Wahl
-  zusammengehört und daß es genau eine ist — und die Gewählte hebt sich
+  der Gruppe, nicht dem einzelnen Knopf. Damit sieht man, dass die Wahl
+  zusammengehört und dass es genau eine ist — und die Gewählte hebt sich
   strukturell ab, über Fläche und Fettung, nie über die Farbe.
 */
 .wahl {
@@ -1453,8 +1453,8 @@ label.inline {
 
   Der Knopf sieht aus wie ein Feld und nicht wie ein Knopf: er steht in einer
   Reihe mit Feldern, nimmt eine Eingabe entgegen und ist darum eckig, hell und
-  gleich hoch wie sie. Nur die Spitze rechts sagt, daß darunter etwas liegt;
-  aufgeklappt dreht sie sich um, statt daß ein zweites Zeichen erscheint.
+  gleich hoch wie sie. Nur die Spitze rechts sagt, dass darunter etwas liegt;
+  aufgeklappt dreht sie sich um, statt dass ein zweites Zeichen erscheint.
 
   Der Aufklapp deckt ab, was hinter ihm liegt — eine deckende Fläche zuerst,
   die Unschärfe nur als Textur. Er hängt am Körper der Seite, damit ihn keine
@@ -2291,7 +2291,7 @@ legend {
   --------------------------
   Der Schalter steht über der Maske, nicht darin (siehe `components/Aendern.tsx`).
   Zugesperrt tritt die Maske zurück: die Felder verlieren ihren Rahmen und die
-  Schrift wird leiser, so daß die Maske wie ein Ausdruck dasteht und nicht wie
+  Schrift wird leiser, so dass die Maske wie ein Ausdruck dasteht und nicht wie
   etwas, in das man hineinschreibt. Freigegeben kommt beides zurück — der
   Unterschied ist auf einen Blick zu sehen.
 */
@@ -2585,8 +2585,8 @@ legend {
   Rand guckt das Blatt selbst noch mit seiner Kopfzeile hervor — Griffleiste,
   darunter der Tag. Ein Wisch nach oben zieht es auf, einer nach unten legt es
   wieder hin (siehe `components/Dock.tsx`). Das ist am Telefon die geläufige
-  Bewegung, und sie zeigt nebenbei, welcher Tag gerade offen liegt, ohne daß
-  man dafür etwas aufziehen müßte.
+  Bewegung, und sie zeigt nebenbei, welcher Tag gerade offen liegt, ohne dass
+  man dafür etwas aufziehen müsste.
 */
 @media (max-width: 560px) {
   :root {
@@ -2651,7 +2651,7 @@ legend {
 
   /*
     Hingelegt bleibt das Blatt stehen — es zeigt nur noch seinen Spalt. Der
-    Reihenkasten muß dafür sichtbar bleiben; am Rechner verschwindet er in
+    Reihenkasten muss dafür sichtbar bleiben; am Rechner verschwindet er in
     diesem Zustand, weil dort der Reiter seine Aufgabe übernimmt.
   */
   :root[data-dock="rail"] .dock-stack:has(.dock-griff) {
@@ -2714,7 +2714,7 @@ legend {
 
   /*
     Die Griffleiste: der Strich, an dem am Telefon gezogen wird. Jede Fläche
-    bekommt ihre eigene, denn jede läßt sich für sich aufziehen und hinlegen —
+    bekommt ihre eigene, denn jede lässt sich für sich aufziehen und hinlegen —
     der Strich sitzt da, wo auch der Wisch gilt.
   */
   .dock-griff {
@@ -3377,7 +3377,7 @@ legend {
 /*
   Die Ecke selbst. Sie trug früher nur die eine Meldung, und die brachte ihre
   Stelle mit. Seit die Aktualisierung dazugekommen ist, können zwei Karten
-  gleichzeitig anstehen — die Ecke stapelt deshalb, statt daß jedes Stück sich
+  gleichzeitig anstehen — die Ecke stapelt deshalb, statt dass jedes Stück sich
   irgendwo festmacht. `column-reverse` hält die jüngste Meldung unten, dort wo
   vorher die einzige stand; die ältere rückt nach oben weg, statt der neuen
   ihren Platz zu nehmen.
@@ -3768,14 +3768,14 @@ legend {
 /* ------------------------------------------------------------ Aktualisierung */
 
 /*
-  Die Karte, die eine neue Fassung anbietet. Sie sieht aus wie die gelungene
+  Die Karte, die eine neue Version anbietet. Sie sieht aus wie die gelungene
   Meldung nebenan und nicht wie die fehlgeschlagene: eine verfügbare
   Aktualisierung ist kein Zustand, der Aufmerksamkeit erzwingt, sondern ein
   Angebot. Farbe bekäme sie erst, wenn wirklich etwas nicht stimmt — und dann
   ist es dieselbe Farbe, die auch sonst „hier stimmt etwas nicht“ heißt.
 
   Die Breite ist festgelegt und wächst nicht mit dem Text: der Balken darunter
-  soll beim Laden nicht springen, und die Anmerkungen zu einer Fassung sind
+  soll beim Laden nicht springen, und die Anmerkungen zu einer Version sind
   mal ein Halbsatz und mal drei Zeilen.
 */
 .aktualisierung {
@@ -3816,7 +3816,7 @@ legend {
 }
 
 /*
-  Der Fortschritt. Dünn und grau: er sagt, daß etwas läuft, und ist keine
+  Der Fortschritt. Dünn und grau: er sagt, dass etwas läuft, und ist keine
   Kennzahl — die Aufmerksamkeit gehört dem Text darüber.
 */
 .aktualisierung-balken {
@@ -3835,7 +3835,7 @@ legend {
 
 /*
   Nennt die Gegenstelle keine Gesamtgröße, wandert ein Stück durch den Balken,
-  statt daß er sich füllt. Ein Anteil, den niemand kennt, wird hier nicht
+  statt dass er sich füllt. Ein Anteil, den niemand kennt, wird hier nicht
   erfunden.
 */
 .aktualisierung-lauf {
@@ -3858,7 +3858,7 @@ legend {
 /*
   Bei reduzierter Bewegung steht die Wanderung still — und ein stehendes Stück
   von 28 Prozent läse sich als „bei einem Viertel“. Der Balken wird deshalb
-  ganz gefüllt und blaß: er sagt dann nur noch, daß etwas läuft, und das ist
+  ganz gefüllt und blass: er sagt dann nur noch, dass etwas läuft, und das ist
   in diesem Fall alles, was bekannt ist. Dieselbe Lösung wie beim Streifen
   eines laufenden Auftrags weiter oben.
 */

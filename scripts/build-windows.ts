@@ -101,7 +101,7 @@ const build = spawnSync("npx", args, { cwd: ROOT, env, stdio: "inherit" });
 if (build.status !== 0) process.exit(build.status ?? 1);
 
 // Was dabei herausgekommen ist, mit Größe — sonst muss man danach suchen.
-// Der Name des Installationsprogramms trägt die Fassungsnummer, also wird das
+// Der Name des Installationsprogramms trägt die Versionsnummer, also wird das
 // Verzeichnis gelesen statt geraten.
 const nsisDir = join(RELEASE, "bundle", "nsis");
 const artifacts = [
