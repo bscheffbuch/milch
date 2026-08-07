@@ -1,8 +1,11 @@
 name: Release
 
-# Gebaut wird nur, wenn ein Versions-Tag geschoben wird. Der Tag ist damit die
-# einzige Stelle, an der eine Veröffentlichung ausgelöst wird — ein Push auf
-# main baut bewusst nichts, damit nicht versehentlich Releases entstehen.
+# Gebaut wird nur zu einem Versions-Tag — ein Push auf main baut bewusst
+# nichts, damit nicht versehentlich Releases entstehen. `workflow_dispatch`
+# steht daneben, weil GitHub den Lauf zum Tag-Push nicht zuverlässig anlegt:
+# beim ersten Release ist er zweimal ausgeblieben. Von Hand auf demselben Tag
+# angestoßen kommt dasselbe heraus, `github.ref_name` ist in beiden Fällen der
+# Tag.
 on:
   push:
     tags:
@@ -83,6 +86,22 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      - name: Release-Text lesen
+        id: notiz
+        shell: bash
+        # Der Text des Releases steht in `docs/release.md` und wird von dort
+        # übernommen, damit er im Repository liegt und nicht von Hand in die
+        # GitHub-Oberfläche getippt wird. Er wandert in zwei Richtungen: auf
+        # die Release-Seite und in die `latest.json`, aus der ihn die Karte im
+        # Programm liest. Nachträgliches Ändern des Entwurfs erreicht die
+        # `latest.json` nicht mehr.
+        run: |
+          {
+            echo 'text<<MILCH_NOTIZ'
+            cat docs/release.md
+            echo MILCH_NOTIZ
+          } >> "$GITHUB_OUTPUT"
+
       - name: Bauen und Release anlegen
         uses: tauri-apps/tauri-action@v0
         env:
@@ -97,7 +116,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "Milch ${{ github.ref_name }}"
-          releaseBody: "Was hier steht, zeigt das Programm in der Karte unten links an, wenn es die Aktualisierung anbietet."
+          releaseBody: ${{ steps.notiz.outputs.text }}
           # Der Release entsteht als Entwurf. Erst wenn alle vier Jobs ihre
           # Artefakte hochgeladen haben und der Entwurf von Hand veröffentlicht
           # wird, findet das Programm die `latest.json` unter

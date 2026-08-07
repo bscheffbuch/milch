@@ -74,7 +74,8 @@ export default function Aktualisierung() {
         const { check } = await import("@tauri-apps/plugin-updater");
         const update = await check();
         if (!update || weg) return;
-        if (window.localStorage.getItem(UEBERSPRUNGEN) === update.version) return;
+        if (window.localStorage.getItem(UEBERSPRUNGEN) === update.version)
+          return;
         setZustand({ art: "gefunden", update });
       } catch (fehler) {
         // Siehe oben: beim Start wird nicht gemeldet, was niemand angestoßen hat.
@@ -138,7 +139,10 @@ export default function Aktualisierung() {
 
   if (zustand.art === "fehler") {
     return (
-      <div className="aktualisierung aktualisierung-fehler no-print" role="alert">
+      <div
+        className="aktualisierung aktualisierung-fehler no-print"
+        role="alert"
+      >
         <div className="stack-sm">
           <b>Die Aktualisierung ist fehlgeschlagen</b>
           <span className="small">{zustand.meldung}</span>
@@ -162,8 +166,8 @@ export default function Aktualisierung() {
         <div className="stack-sm">
           <b>Die Aktualisierung ist eingespielt</b>
           <span className="small muted">
-            Bitte das Programm einmal schließen und wieder öffnen — dann läuft die
-            neue Fassung.
+            Bitte das Programm einmal schließen und wieder öffnen — dann läuft
+            die neue Fassung.
           </span>
         </div>
       </div>
@@ -194,11 +198,19 @@ export default function Aktualisierung() {
               sagt dann „unbestimmt“, und das ist die Wahrheit — eine Zahl
               stünde hier nur, weil das Feld eine erwartet.
             */
-            aria-valuenow={anteil === null ? undefined : Math.round(anteil * 100)}
+            aria-valuenow={
+              anteil === null ? undefined : Math.round(anteil * 100)
+            }
           >
             <div
-              className={anteil === null ? "aktualisierung-lauf" : "aktualisierung-fuellung"}
-              style={anteil === null ? undefined : { width: `${anteil * 100}%` }}
+              className={
+                anteil === null
+                  ? "aktualisierung-lauf"
+                  : "aktualisierung-fuellung"
+              }
+              style={
+                anteil === null ? undefined : { width: `${anteil * 100}%` }
+              }
             />
           </div>
           {zustand.art === "laedt" && (
@@ -218,7 +230,9 @@ export default function Aktualisierung() {
     <div className="aktualisierung no-print" role="status">
       <div className="stack-sm">
         <b>Version {update.version} steht bereit</b>
-        {update.body && <span className="small muted">{update.body}</span>}
+        {update.body && (
+          <span className="small muted aktualisierung-text">{update.body}</span>
+        )}
         <div className="row">
           <button
             className="btn-sm btn-primary"

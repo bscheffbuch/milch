@@ -105,7 +105,12 @@ Sperrbildschirm.
 
 ## Eine Version veröffentlichen
 
-Die Versionsnummer steht nur an einer Stelle, nämlich in `package.json`.
+Zuerst den Text zur neuen Fassung in `docs/release.md` schreiben — er wird beim
+Bauen mit eingesammelt und läßt sich hinterher nicht mehr überall nachbessern
+(siehe unten). Stehen dort Dateinamen mit der alten Versionsnummer, gehören sie
+mitgezogen.
+
+Die Versionsnummer selbst steht nur an einer Stelle, nämlich in `package.json`.
 `src-tauri/tauri.conf.json` verweist mit `"version": "../package.json"` darauf,
 damit die Nummer im Paket und die Nummer im Repository nicht auseinanderlaufen
 können.
@@ -158,9 +163,24 @@ Updater-Pakete (`.app.tar.gz`) und zu jedem davon eine `.sig`, und schließlich
 die `latest.json`. Die `.dmg` haben bewusst keine Signatur: über sie
 installiert man das erste Mal von Hand, aktualisiert wird nicht über sie.
 
-Der Text, den man im Release-Entwurf einträgt, ist genau der Text, den die Karte
-unten links im Programm anzeigt. Bis dahin steht dort der Platzhalter aus
-`release.yml`.
+## Der Text zur Fassung
+
+Er steht in `docs/release.md` und wird **vor** dem Tag geschrieben. Der Workflow
+liest die Datei und gibt sie an zwei Stellen weiter: auf die Release-Seite und
+in die `latest.json`, aus der ihn die Karte unten links im Programm nimmt.
+
+Daraus folgt die Falle: Wer den Entwurf nachträglich in der GitHub-Oberfläche
+umschreibt, ändert nur die Seite. Die `latest.json` liegt als fertige Datei am
+Release und wird davon nicht berührt — die Karte zeigt weiterhin den alten
+Text. Wer nachbessert, muß die `latest.json` also mit ändern und neu hochladen,
+oder gleich die Datei im Repository richtigstellen und neu bauen.
+
+Weil derselbe Text in der Karte landet, gehört er kurz gehalten. Die Karte ist
+schmal, wertet kein Markdown aus und zeigt nur Zeilenumbrüche; Überschriften und
+Tabellen stehen dort als Zeichen da, was sie sind. Was ausführlich sein muß —
+welche Datei man lädt, was beim ersten Start passiert — steht besser in der
+README und wird verlinkt. Die erste Fassung macht davon eine Ausnahme: bei ihr
+sieht niemand eine Karte, weil es nichts gibt, was sich aktualisieren könnte.
 
 Auf dem eigenen Rechner bauen — für einen Blick auf das Paket, nicht für eine
 Veröffentlichung — geht weiterhin mit `npm run app:build` beziehungsweise

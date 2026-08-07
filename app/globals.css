@@ -92,8 +92,8 @@
   --pad-x-field: 10px;
 
   --font:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 
   /*
     Der Sperrbalken, an einer Stelle festgelegt: beide Kalender zeichnen
@@ -3796,6 +3796,16 @@ legend {
 .aktualisierung > .stack-sm {
   flex: 1;
   min-width: 0;
+}
+
+/* Der Text kommt aus dem Release und bringt eigene Zeilenumbrüche mit; ohne
+   pre-line liefe er zu einem Absatz zusammen. Markdown wird bewusst nicht
+   ausgewertet — die Karte ist keine Textanzeige, sie ist eine Frage. Deshalb
+   auch die Höhenbegrenzung: was länger ist, steht auf der Release-Seite. */
+.aktualisierung-text {
+  white-space: pre-line;
+  max-height: 7.5em;
+  overflow-y: auto;
 }
 
 /* Ein Fehlschlag beim Einspielen trägt denselben Ton wie jeder andere. */
