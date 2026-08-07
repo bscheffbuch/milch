@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { inTauri } from "@/lib/data/client";
 
-import type { Update } from "@tauri-apps/plugin-updater";
+import type { Update as UpdateInfo } from "@tauri-apps/plugin-updater";
 
 /*
-  Die Aktualisierung des Programms
-  ================================
+  Das Update des Programms
+  ========================
 
   Beim Start wird beim Repositorium nachgefragt, ob dort eine höhere Version
   liegt. Gibt es eine, erscheint unten links eine Karte, die sie anbietet.
@@ -28,7 +28,7 @@ import type { Update } from "@tauri-apps/plugin-updater";
   aktualisieren; dort bliebe nur ein Fehler über eine fehlende Brücke übrig.
 
   Warum das eine Signatur braucht und warum macOS und Windows beim ersten
-  Öffnen trotzdem warnen, steht in `docs/aktualisierungen.md`.
+  Öffnen trotzdem warnen, steht in `docs/updates.md`.
 */
 
 /**
@@ -38,12 +38,12 @@ import type { Update } from "@tauri-apps/plugin-updater";
  * gefragt werden — bei der nächsten, höheren meldet sich die Karte wieder.
  * Deshalb steht die Versionsnummer darin und nicht bloß ein Schalter.
  */
-const UEBERSPRUNGEN = "milch.aktualisierung.uebersprungen";
+const UEBERSPRUNGEN = "milch.update.skipped";
 
 type Zustand =
   | { art: "still" }
-  | { art: "gefunden"; update: Update }
-  | { art: "laedt"; update: Update; geladen: number; gesamt: number | null }
+  | { art: "gefunden"; update: UpdateInfo }
+  | { art: "laedt"; update: UpdateInfo; geladen: number; gesamt: number | null }
   | { art: "bereit" }
   | { art: "neustart" }
   | { art: "fehler"; meldung: string };
@@ -56,7 +56,7 @@ function megabyte(bytes: number): string {
   });
 }
 
-export default function Aktualisierung() {
+export default function Update() {
   const [zustand, setZustand] = useState<Zustand>({ art: "still" });
 
   // Beim Entwickeln läuft jeder Effekt zweimal. Ohne diese Sperre ginge auch
@@ -79,7 +79,7 @@ export default function Aktualisierung() {
         setZustand({ art: "gefunden", update });
       } catch (fehler) {
         // Siehe oben: beim Start wird nicht gemeldet, was niemand angestoßen hat.
-        console.warn("Die Aktualisierung ließ sich nicht prüfen:", fehler);
+        console.warn("Das Update ließ sich nicht prüfen:", fehler);
       }
     })();
 
@@ -88,7 +88,7 @@ export default function Aktualisierung() {
     };
   }, []);
 
-  const einspielen = useCallback(async (update: Update) => {
+  const einspielen = useCallback(async (update: UpdateInfo) => {
     setZustand({ art: "laedt", update, geladen: 0, gesamt: null });
 
     try {
@@ -130,7 +130,7 @@ export default function Aktualisierung() {
       const { relaunch } = await import("@tauri-apps/plugin-process");
       await relaunch();
     } catch (fehler) {
-      console.warn("Der Neustart nach der Aktualisierung ging nicht:", fehler);
+      console.warn("Der Neustart nach dem Update ging nicht:", fehler);
       setZustand({ art: "neustart" });
     }
   }, []);
@@ -139,12 +139,9 @@ export default function Aktualisierung() {
 
   if (zustand.art === "fehler") {
     return (
-      <div
-        className="aktualisierung aktualisierung-fehler no-print"
-        role="alert"
-      >
+      <div className="update update-error no-print" role="alert">
         <div className="stack-sm">
-          <b>Die Aktualisierung ist fehlgeschlagen</b>
+          <b>Das Update ist fehlgeschlagen</b>
           <span className="small">{zustand.meldung}</span>
         </div>
         <button
@@ -162,9 +159,9 @@ export default function Aktualisierung() {
   // ist kein Fehlschlag und trägt deshalb auch nicht dessen Ton.
   if (zustand.art === "neustart") {
     return (
-      <div className="aktualisierung no-print" role="status">
+      <div className="update no-print" role="status">
         <div className="stack-sm">
-          <b>Die Aktualisierung ist eingespielt</b>
+          <b>Das Update ist eingespielt</b>
           <span className="small muted">
             Bitte das Programm einmal schließen und wieder öffnen — dann läuft
             die neue Version.
@@ -180,7 +177,7 @@ export default function Aktualisierung() {
     const anteil = gesamt ? Math.min(geladen / gesamt, 1) : null;
 
     return (
-      <div className="aktualisierung no-print" role="status">
+      <div className="update no-print" role="status">
         <div className="stack-sm">
           <b>
             {zustand.art === "bereit"
@@ -188,9 +185,9 @@ export default function Aktualisierung() {
               : `Version ${zustand.update.version} wird geladen`}
           </b>
           <div
-            className="aktualisierung-balken"
+            className="update-bar"
             role="progressbar"
-            aria-label="Fortschritt der Aktualisierung"
+            aria-label="Fortschritt des Updates"
             aria-valuemin={0}
             aria-valuemax={100}
             /*
@@ -203,11 +200,7 @@ export default function Aktualisierung() {
             }
           >
             <div
-              className={
-                anteil === null
-                  ? "aktualisierung-lauf"
-                  : "aktualisierung-fuellung"
-              }
+              className={anteil === null ? "update-run" : "update-fill"}
               style={
                 anteil === null ? undefined : { width: `${anteil * 100}%` }
               }
@@ -227,11 +220,11 @@ export default function Aktualisierung() {
   const { update } = zustand;
 
   return (
-    <div className="aktualisierung no-print" role="status">
+    <div className="update no-print" role="status">
       <div className="stack-sm">
         <b>Version {update.version} steht bereit</b>
         {update.body && (
-          <span className="small muted aktualisierung-text">{update.body}</span>
+          <span className="small muted update-text">{update.body}</span>
         )}
         <div className="row">
           <button

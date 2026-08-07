@@ -2,7 +2,7 @@
 
 Milchmenge, Messungen, Behandlungen und die Käseabrechnung einer Alpsaison.
 Ein Programm für den eigenen Rechner: kein Konto, kein Server, keine Cloud.
-Alles steht in **einer** Datei, und Sichern heißt, diese Datei zu kopieren.
+Alles steht in **einer** Datei, und ein Backup heißt, diese Datei zu kopieren.
 
 ## Aufbau
 
@@ -104,7 +104,7 @@ nichts.
 
 Wie das im einzelnen zusammenhängt — die beiden verschiedenen Signaturen, warum
 macOS und Windows beim ersten Start trotzdem warnen, und was passiert, wenn der
-Schlüssel verlorengeht — steht in [`docs/aktualisierungen.md`](docs/aktualisierungen.md).
+Schlüssel verlorengeht — steht in [`docs/updates.md`](docs/updates.md).
 
 ## Im Heimnetz freigeben
 
@@ -153,7 +153,7 @@ Die Einstellungen zeigen den vollständigen Pfad an. Wer zwei Bestände
 nebeneinander führen will — einen echten und einen zum Ausprobieren —, setzt
 `MILCH_DB` auf eine andere Datei; das sticht alles andere.
 
-Sicherungen legt das Programm daneben ab und überschreibt dabei nie eine
-ältere. Beim Wiederherstellen wird die neue Datei zuerst geprüft und der
+Backups legt das Programm daneben ab und überschreibt dabei nie ein
+älteres. Beim Wiederherstellen wird die neue Datei zuerst geprüft und der
 bisherige Stand gesichert: Ist die Datei keine Alpabrechnung oder ist sie
 beschädigt, bleibt alles stehen, wie es ist.

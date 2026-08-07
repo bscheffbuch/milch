@@ -159,7 +159,7 @@ pub struct Pickup {
     pub note: Option<String>,
 }
 
-/// Eine abgelegte Sicherung, wie sie im Sicherungsordner liegt.
+/// Ein abgelegtes Backup, wie es im Backup-Ordner liegt.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BackupFile {
@@ -184,7 +184,7 @@ pub struct DbFile {
     pub backups: Vec<BackupFile>,
     /// Ob vor größeren Änderungen von selbst gesichert wird.
     pub auto: bool,
-    /// So viele selbsttätige Sicherungen bleiben liegen.
+    /// So viele selbsttätige Backups bleiben liegen.
     pub auto_keep: i64,
 }
 
@@ -221,7 +221,7 @@ pub struct Snapshot {
 /// angelegten Eintrags, falls die Oberfläche gleich dorthin springen will.
 ///
 /// `notice` bleibt leer, wo das Ergebnis schon auf dem Bildschirm steht. Wer
-/// eine Sicherung schreibt, sieht davon aber nichts — dort steht dann, wohin.
+/// ein Backup schreibt, sieht davon aber nichts — dort steht dann, wohin.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommandResult {

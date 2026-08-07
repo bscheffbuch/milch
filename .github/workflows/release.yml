@@ -108,7 +108,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Dies ist *nicht* die Signatur, die Windows oder macOS prüfen —
           # damit signiert ausschließlich der Updater seine eigenen Pakete,
-          # damit das laufende Programm erkennt, dass eine Aktualisierung
+          # damit das laufende Programm erkennt, dass ein Update
           # wirklich aus diesem Repository stammt. Der Schlüssel ist kostenlos
           # und wird mit `npx tauri signer generate` erzeugt.
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}

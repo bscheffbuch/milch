@@ -3376,7 +3376,7 @@ legend {
 */
 /*
   Die Ecke selbst. Sie trug früher nur die eine Meldung, und die brachte ihre
-  Stelle mit. Seit die Aktualisierung dazugekommen ist, können zwei Karten
+  Stelle mit. Seit das Update dazugekommen ist, können zwei Karten
   gleichzeitig anstehen — die Ecke stapelt deshalb, statt dass jedes Stück sich
   irgendwo festmacht. `column-reverse` hält die jüngste Meldung unten, dort wo
   vorher die einzige stand; die ältere rückt nach oben weg, statt der neuen
@@ -3422,7 +3422,7 @@ legend {
 }
 
 /*
-  Dieselbe Ecke meldet auch Gelungenes — eine Sicherung sieht man sonst
+  Dieselbe Ecke meldet auch Gelungenes — ein Backup sieht man sonst
   nirgends. Rot bleibt dem Fehlschlag vorbehalten; die gelungene Meldung
   trägt keinen eigenen Farbton, weil sie keinen Zustand anzeigt, sondern
   nur bestätigt, was gerade angestoßen wurde.
@@ -3765,12 +3765,12 @@ legend {
   }
 }
 
-/* ------------------------------------------------------------ Aktualisierung */
+/* ------------------------------------------------------------------- Update */
 
 /*
   Die Karte, die eine neue Version anbietet. Sie sieht aus wie die gelungene
-  Meldung nebenan und nicht wie die fehlgeschlagene: eine verfügbare
-  Aktualisierung ist kein Zustand, der Aufmerksamkeit erzwingt, sondern ein
+  Meldung nebenan und nicht wie die fehlgeschlagene: ein verfügbares
+  Update ist kein Zustand, der Aufmerksamkeit erzwingt, sondern ein
   Angebot. Farbe bekäme sie erst, wenn wirklich etwas nicht stimmt — und dann
   ist es dieselbe Farbe, die auch sonst „hier stimmt etwas nicht“ heißt.
 
@@ -3778,7 +3778,7 @@ legend {
   soll beim Laden nicht springen, und die Anmerkungen zu einer Version sind
   mal ein Halbsatz und mal drei Zeilen.
 */
-.aktualisierung {
+.update {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -3793,7 +3793,7 @@ legend {
   animation: flash-in 160ms var(--ease);
 }
 
-.aktualisierung > .stack-sm {
+.update > .stack-sm {
   flex: 1;
   min-width: 0;
 }
@@ -3802,14 +3802,14 @@ legend {
    pre-line liefe er zu einem Absatz zusammen. Markdown wird bewusst nicht
    ausgewertet — die Karte ist keine Textanzeige, sie ist eine Frage. Deshalb
    auch die Höhenbegrenzung: was länger ist, steht auf der Release-Seite. */
-.aktualisierung-text {
+.update-text {
   white-space: pre-line;
   max-height: 7.5em;
   overflow-y: auto;
 }
 
 /* Ein Fehlschlag beim Einspielen trägt denselben Ton wie jeder andere. */
-.aktualisierung-fehler {
+.update-error {
   border-color: var(--alert-border);
   background: var(--alert-bg);
   color: var(--alert);
@@ -3819,7 +3819,7 @@ legend {
   Der Fortschritt. Dünn und grau: er sagt, dass etwas läuft, und ist keine
   Kennzahl — die Aufmerksamkeit gehört dem Text darüber.
 */
-.aktualisierung-balken {
+.update-bar {
   overflow: hidden;
   width: 100%;
   height: 4px;
@@ -3827,7 +3827,7 @@ legend {
   background: var(--surface-3);
 }
 
-.aktualisierung-fuellung {
+.update-fill {
   height: 100%;
   background: var(--text-muted);
   transition: width 0.12s;
@@ -3838,15 +3838,15 @@ legend {
   statt dass er sich füllt. Ein Anteil, den niemand kennt, wird hier nicht
   erfunden.
 */
-.aktualisierung-lauf {
+.update-run {
   width: 28%;
   height: 100%;
   border-radius: var(--pill);
   background: var(--text-muted);
-  animation: aktualisierung-lauf 1.1s var(--ease) infinite;
+  animation: update-run 1.1s var(--ease) infinite;
 }
 
-@keyframes aktualisierung-lauf {
+@keyframes update-run {
   from {
     transform: translateX(-100%);
   }
@@ -3863,7 +3863,7 @@ legend {
   eines laufenden Auftrags weiter oben.
 */
 @media (prefers-reduced-motion: reduce) {
-  .aktualisierung-lauf {
+  .update-run {
     width: 100%;
     background: var(--border-strong);
   }

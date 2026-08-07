@@ -1,6 +1,6 @@
-# Aktualisierungen über GitHub
+# Updates über GitHub
 
-Die Desktop-Fassung von Milch holt sich ihre Aktualisierungen selbst. Beim Start
+Die Desktop-Fassung von Milch holt sich ihre Updates selbst. Beim Start
 fragt sie eine Datei namens `latest.json` beim jüngsten GitHub-Release ab,
 vergleicht die dort genannte Versionsnummer mit der eigenen und bietet, falls es
 etwas Neueres gibt, unten links eine Karte an. Es gibt bewusst keine Rückmeldung,
@@ -17,10 +17,10 @@ Beteiligt sind vier Stellen:
   `bundle.createUpdaterArtifacts`, ohne das gar keine Updater-Pakete entstehen.
 - `src-tauri/capabilities/default.json` — muss `updater:default` **und**
   `process:default` führen. Siehe unten, das ist die eine Falle des Aufbaus.
-- `components/Aktualisierung.tsx` — führt die Prüfung aus und zeigt die Karte.
-  Sie hängt in `components/Shell.tsx` in derselben Ecke wie die Meldungen der
-  Aufträge; das `div.meldungen` stapelt beide, weil die Aktualisierung an keinem
-  Auftrag hängt und deshalb neben einer Auftragsmeldung stehen kann.
+- `components/Update.tsx` — führt die Prüfung aus und zeigt die Karte. Sie
+  hängt in `components/Shell.tsx` in derselben Ecke wie die Meldungen der
+  Aufträge; das `div.meldungen` stapelt beide, weil das Update an keinem Auftrag
+  hängt und deshalb neben einer Auftragsmeldung stehen kann.
 - `.github/workflows/release.yml` — baut die Pakete für alle Systeme, signiert
   sie für den Updater und legt den Release samt `latest.json` an.
 
@@ -40,7 +40,7 @@ Das ist die Stelle, an der die meiste Verwirrung entsteht, weil beides
 miteinander zu tun hat.
 
 **Die Updater-Signatur (minisign) ist verpflichtend und kostenlos.** Tauri
-weigert sich, eine Aktualisierung einzuspielen, die es nicht gegen den in der
+weigert sich, ein Update einzuspielen, das es nicht gegen den in der
 Konfiguration hinterlegten öffentlichen Schlüssel prüfen kann; abschalten lässt
 sich das nicht. Das Schlüsselpaar erzeugt man selbst mit
 `npx tauri signer generate`, es kostet nichts und braucht keine
@@ -57,7 +57,7 @@ unten unter „Was beim ersten Start passiert".
 
 `tauri add process` trägt seine eigene ACL-Zeile **nicht** von selbst in
 `src-tauri/capabilities/default.json` ein. Fehlt `process:default` dort, baut
-alles anstandslos durch, die Aktualisierung lädt und installiert sich auch — und
+alles anstandslos durch, das Update lädt und installiert sich auch — und
 erst der Neustart danach bricht zur Laufzeit an der Rechteprüfung ab. Also genau
 in dem Moment, in dem die neue Version schon auf der Platte liegt und niemand
 mehr eine Fehlermeldung erwartet.
@@ -95,9 +95,9 @@ richtige Kennwort. Es ausdrücklich anzulegen ist trotzdem sauberer, weil man
 sonst später nicht unterscheiden kann, ob es leer ist oder vergessen wurde.
 
 Wichtig: **Geht der private Schlüssel verloren, lässt sich für alle bereits
-installierten Kopien nie wieder eine Aktualisierung ausliefern.** Sie prüfen
+installierten Kopien nie wieder ein Update ausliefern.** Sie prüfen
 gegen den öffentlichen Schlüssel, der in ihrer Binärdatei fest eingebacken ist;
-ein neues Schlüsselpaar passt dort nicht mehr hinein. Eine Sicherungskopie von
+ein neues Schlüsselpaar passt dort nicht mehr hinein. Ein Backup von
 `~/.tauri/milch.key` an einem Ort außerhalb dieses Rechners ist deshalb keine
 Vorsichtsmaßnahme, sondern Bedingung. Nur eben nicht über einen Weg, der
 unterwegs mitliest — kein Chat, keine Benachrichtigung aufs Telefon, kein
@@ -152,8 +152,8 @@ also derselbe Release-Name und derselbe Tag wie beim automatischen Lauf.
 Der Workflow baut vier Pakete — macOS auf Apple Silicon, macOS auf Intel, Linux
 und Windows — und legt sie an einem **Release im Entwurfsstatus** ab. Erst wenn
 der Entwurf von Hand veröffentlicht wird, ist die `latest.json` unter
-`releases/latest/download/` erreichbar und die installierten Kopien finden die
-Aktualisierung. Das ist Absicht: solange ein Job noch läuft oder fehlgeschlagen
+`releases/latest/download/` erreichbar und die installierten Kopien finden das
+Update. Das ist Absicht: solange ein Job noch läuft oder fehlgeschlagen
 ist, soll niemand ein halbes Release mit fehlenden Plattformen angeboten
 bekommen.
 
@@ -185,7 +185,7 @@ sieht niemand eine Karte, weil es nichts gibt, was sich aktualisieren könnte.
 Auf dem eigenen Rechner bauen — für einen Blick auf das Paket, nicht für eine
 Veröffentlichung — geht weiterhin mit `npm run app:build` beziehungsweise
 `npm run app:build:win`. Diese Pakete sind unsigniert und taugen deshalb nicht
-als Aktualisierung; der Weg dorthin führt über den Tag.
+als Update; der Weg dorthin führt über den Tag.
 
 Der Befehl endet dabei mit einer roten Zeile, und das ist erwartbar:
 
@@ -227,16 +227,16 @@ xattr -dr com.apple.quarantine /Applications/Milch.app
 
 **Windows.** SmartScreen meldet „Der Computer wurde durch Windows geschützt".
 Über „Weitere Informationen" erscheint der Knopf „Trotzdem ausführen". Diese
-Meldung kommt bei jeder Aktualisierung wieder, weil der Installer keinen Ruf
+Meldung kommt bei jedem Update wieder, weil der Installer keinen Ruf
 aufbauen kann, solange er unsigniert ist.
 
 **Linux.** Keine Hürde, das AppImage startet direkt.
 
 Erwartungsgemäß betrifft die Warnung nur die **erste** Installation: die
-späteren Aktualisierungen lädt das laufende Programm selbst herunter, und dabei
+späteren Updates lädt das laufende Programm selbst herunter, und dabei
 wird unter macOS kein Quarantäne-Merkmal gesetzt. Das ist bislang nicht
 nachgemessen, sondern aus dem Verhalten von Gatekeeper abgeleitet — bei der
-ersten echten Aktualisierung also bitte einmal nachsehen.
+ersten echten Update also bitte einmal nachsehen.
 
 ## Grenzen, die man kennen sollte
 
@@ -253,6 +253,6 @@ ersten echten Aktualisierung also bitte einmal nachsehen.
   neues, höheres ersetzt werden, nicht durch das Wiederveröffentlichen des
   alten.
 - **„Überspringen" gilt pro Version und pro Rechner.** Die Nummer liegt im
-  `localStorage` unter `milch.aktualisierung.uebersprungen`; die nächsthöhere
+  `localStorage` unter `milch.update.skipped`; die nächsthöhere
   Version fragt wieder. Wer sich verklickt hat, wird also nicht dauerhaft
   abgeschnitten, muss aber auf die übernächste warten oder den Eintrag löschen.

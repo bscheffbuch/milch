@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Was das Fenster darf. Nur das Nötigste: die eigene Anweisung an die Datenschicht — die läuft ohnehin über `invoke` und braucht hier nichts —, die beiden Dateiauswahlen der Einstellungen und die Aktualisierung samt dem Neustart, der ihr folgt. Alles Weitere, was Tauri anbietet, bleibt zu. Achtung bei `process:default`: `tauri add process` trägt diese Zeile nicht von selbst ein. Fehlt sie, baut alles durch und erst der Neustart nach dem Einspielen bricht zur Laufzeit an der ACL ab — also genau dann, wenn die neue Fassung schon auf der Platte liegt.",
+  "description": "Was das Fenster darf. Nur das Nötigste: die eigene Anweisung an die Datenschicht — die läuft ohnehin über `invoke` und braucht hier nichts —, die beiden Dateiauswahlen der Einstellungen und das Update samt dem Neustart, der ihm folgt. Alles Weitere, was Tauri anbietet, bleibt zu. Achtung bei `process:default`: `tauri add process` trägt diese Zeile nicht von selbst ein. Fehlt sie, baut alles durch und erst der Neustart nach dem Einspielen bricht zur Laufzeit an der ACL ab — also genau dann, wenn die neue Fassung schon auf der Platte liegt.",
   "windows": ["main"],
   "permissions": [
     "core:default",

@@ -439,7 +439,7 @@ export function useActions() {
       fertigen Programm und den kleinen Dienst während der Entwicklung.
     */
 
-    /** Ohne Ziel entsteht eine Sicherung im Ordner neben der Datenbank. */
+    /** Ohne Ziel entsteht ein Backup im Ordner neben der Datenbank. */
     const exportDb: Action = async (data) => {
       await run("exportDb", { target: optStr(data, "target") });
     };
@@ -459,7 +459,7 @@ export function useActions() {
     /*
       Den Ordner öffnet das Betriebssystem, nicht die Oberfläche: eine WebView
       darf das nicht, und soll es auch nicht. Die Datenschicht lässt dabei nur
-      die Datenbank und ihren Sicherungsordner zu.
+      die Datenbank und ihren Backup-Ordner zu.
     */
     const revealPath: Action = async (data) => {
       const path = str(data, "path");

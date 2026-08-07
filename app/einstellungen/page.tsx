@@ -381,12 +381,12 @@ export default function Page() {
             <div>
               <h2>Daten</h2>
               <p>
-                Alles liegt in einer einzigen Datei. Sichern heißt: diese Datei kopieren.
+                Alles liegt in einer einzigen Datei. Ein Backup heißt: diese Datei kopieren.
               </p>
             </div>
             <form action={exportDb}>
               <button className="btn-primary" type="submit">
-                Sicherung anlegen
+                Backup anlegen
               </button>
             </form>
           </div>
@@ -415,9 +415,9 @@ export default function Page() {
 
           <div className="card-head card-head-action" style={{ marginBottom: 8 }}>
             <div>
-              <h3>Sicherungen</h3>
+              <h3>Backups</h3>
               <p>
-                Eine Sicherung überschreibt nie eine ältere. Wer sie außer Haus haben will,
+                Ein Backup überschreibt nie ein älteres. Wer sie außer Haus haben will,
                 legt sie auf einen Stick — dieselbe Datei, ein anderer Pfad.
               </p>
             </div>
@@ -432,13 +432,13 @@ export default function Page() {
               ) : null}
               <Panel
                 hint="Ein vollständiger Pfad, etwa /Volumes/Stick/alp-2026.db. Eine vorhandene Datei wird nicht überschrieben."
-                id="sicherung-ziel"
-                title="Sicherung woanders ablegen"
+                id="backup-ziel"
+                title="Backup woanders ablegen"
                 trigger="Woanders ablegen"
               >
                 <form action={exportDb} className="stack-sm">
                   <PathField
-                    defaultFileName={`alp-${snapshot.season?.name ?? "sicherung"}.db`}
+                    defaultFileName={`alp-${snapshot.season?.name ?? "backup"}.db`}
                     id="exportTarget"
                     label="Ziel"
                     mode="save"
@@ -499,7 +499,7 @@ export default function Page() {
                 <>
                   Vor der ersten Änderung an einer Messung und vor jedem Löschen entsteht
                   eine Kopie des Standes davor. Die jüngsten {db.autoKeep} bleiben liegen,
-                  ältere räumt das Programm weg; von Hand angelegte Sicherungen bleiben
+                  ältere räumt das Programm weg; von Hand angelegte Backups bleiben
                   unangetastet.
                 </>
               ) : (
@@ -509,13 +509,13 @@ export default function Page() {
           </form>
 
           {db.backups.length === 0 ? (
-            <Empty>Noch keine Sicherung. Sie landen in {db.backupDir}.</Empty>
+            <Empty>Noch kein Backup. Sie landen in {db.backupDir}.</Empty>
           ) : (
             <div className="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Sicherung</th>
+                    <th>Backup</th>
                     <th>angelegt</th>
                     <th className="t-num">Größe</th>
                     <th />

@@ -26,7 +26,7 @@ pub struct Store {
     /// Messungen, für die in diesem Lauf schon von selbst gesichert wurde.
     ///
     /// Das Messblatt speichert beim Tippen, und die Tastatureingabe speichert je
-    /// Kuh — eine Sicherung je Speichervorgang wären hundert Dateien für einen
+    /// Kuh — ein Backup je Speichervorgang wären hundert Dateien für einen
     /// Abend. Gesichert wird deshalb beim ersten Zugriff auf eine Messung, und
     /// zwar der Stand davor; die weiteren Änderungen derselben Messung stehen
     /// dann in derselben Sitzung.
@@ -98,7 +98,7 @@ impl Store {
         let target = payload.get("target").and_then(Value::as_str);
         let conn = self.lock()?;
         let written = backup::export(&conn, &self.path, target, "milch")?;
-        Ok(format!("Sicherung geschrieben: {}", written.display()))
+        Ok(format!("Backup geschrieben: {}", written.display()))
     }
 
     /// Ersetzt die laufende Datenbank durch eine geprüfte Datei.
@@ -204,7 +204,7 @@ impl Store {
 
     /// Öffnet den Ordner einer Datei und wählt sie an.
     ///
-    /// Erlaubt sind nur die Datenbank selbst, ihr Sicherungsordner und was
+    /// Erlaubt sind nur die Datenbank selbst, ihr Backup-Ordner und was
     /// darin liegt. Die Oberfläche schickt hier zwar nur Pfade her, die sie
     /// selbst aus dem Stand hat — aber ein Befehl, der jeden Ordner des
     /// Rechners öffnet, ist eine Tür, die niemand braucht.
@@ -256,7 +256,7 @@ impl Store {
     fn delete_backup(&self, payload: &Value) -> Result<String, String> {
         let target = payload.get("path").and_then(Value::as_str).unwrap_or("");
         let removed = backup::remove(&self.path, target)?;
-        Ok(format!("Sicherung {removed} gelöscht."))
+        Ok(format!("Backup {removed} gelöscht."))
     }
 
     fn lock(&self) -> Result<std::sync::MutexGuard<'_, Connection>, String> {

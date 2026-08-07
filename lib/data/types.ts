@@ -136,7 +136,7 @@ export interface Pickup {
   note: string | null;
 }
 
-/** Eine abgelegte Sicherung, wie sie im Sicherungsordner liegt. */
+/** Ein abgelegtes Backup, wie es im Backup-Ordner liegt. */
 export interface BackupFile {
   name: string;
   path: string;
@@ -157,7 +157,7 @@ export interface DbFile {
   backups: BackupFile[];
   /** Ob vor größeren Änderungen von selbst gesichert wird. */
   auto: boolean;
-  /** So viele selbsttätige Sicherungen bleiben liegen. */
+  /** So viele selbsttätige Backups bleiben liegen. */
   autoKeep: number;
 }
 
@@ -188,7 +188,7 @@ export interface Snapshot {
  * angelegten Eintrags, falls die Maske gleich dorthin springen will.
  *
  * `notice` bleibt leer, wo das Ergebnis schon auf dem Bildschirm steht. Wer
- * eine Sicherung schreibt, sieht davon aber nichts — dort steht dann, wohin.
+ * ein Backup schreibt, sieht davon aber nichts — dort steht dann, wohin.
  */
 export interface CommandResult {
   snapshot: Snapshot;

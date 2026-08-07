@@ -57,7 +57,7 @@ fn host(
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
-        // Die Aktualisierung fragt beim Start bei GitHub nach und spielt auf
+        // Das Update fragt beim Start bei GitHub nach und spielt auf
         // Wunsch ein; `process` liefert nur den Neustart danach. Beide reden
         // ausschließlich mit der Oberfläche — hier ist nichts anzumelden
         // außer den Plugins selbst.

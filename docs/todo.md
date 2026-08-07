@@ -76,7 +76,7 @@ _Zur Zeit nichts._
       Hand weiterhin nur mit allen drei Dateien zusammen etwas taugt.
 
 - [x] **Nachgemessen, ob der Bestand die Neuinstallation wirklich übersteht — und
-      ob eine Sicherung wirklich alles enthält.** Nicht aus dem Code geschlossen,
+      ob ein Backup wirklich alles enthält.** Nicht aus dem Code geschlossen,
       sondern an den Dateien nachgesehen. Die Datenbank liegt in
       `~/Library/Application Support/de.alp.milch/` und damit außerhalb des
       Programmbündels; der Ordner ist vom 04.08.2026 und hat die bisherigen Bauten
@@ -87,25 +87,25 @@ _Zur Zeit nichts._
       („unable to open database file"), und was drinsteht, ist eine einzige Seite
       ohne eine einzige Tabelle. Gelesen mit ihrem Journal zusammen sind es
       5 Bauern, 71 Kühe, 2 Gänge, 70 Messwerte und 1 Behandlung. Genau diese Zahlen
-      stehen auch in der jüngsten Sicherung (`milch-2026-08-05-1829.db`) und in der
+      stehen auch im jüngsten Backup (`milch-2026-08-05-1829.db`) und in der
       Datei, die im Ordner „Downloads" liegt — `VACUUM INTO` schreibt also
       tatsächlich den Stand mitsamt Journal, und zwar in eine einzelne Datei ohne
-      `-wal` daneben. Die älteren beiden Sicherungen zeigen die Vorstufen (leer,
+      `-wal` daneben. Die älteren beiden Backups zeigen die Vorstufen (leer,
       dann Bauern und Kühe ohne Messungen), stimmen also auch untereinander.
       Das Ganze noch einmal am laufenden Programm nachgestellt, auf einer
       Wegwerfdatei über `MILCH_DB` und den Entwicklungsdienst: nach zwei
       geschriebenen Messwerten enthielt eine Handkopie der Hauptdatei den alten
-      Stand (70 Messwerte, der neue Wert fehlt), die über die Oberfläche gezogene
-      Sicherung dagegen den neuen (2 Messwerte, Kuh 1 mit 9,5). Die Wegwerfdatei
+      Stand (70 Messwerte, der neue Wert fehlt), das über die Oberfläche gezogene
+      Backup dagegen den neuen (2 Messwerte, Kuh 1 mit 9,5). Die Wegwerfdatei
       und der Dienst sind wieder abgeräumt, die echte Datenbank blieb unangetastet.
 
-- [x] **Die selbsttätigen Sicherungen laufen — im Code.** Am selben Weg geprüft.
+- [x] **Die selbsttätigen Backups laufen — im Code.** Am selben Weg geprüft.
       Der erste `saveRoundValues` eines Gangs legt `vor-messung-…` an, ein zweiter
       Aufruf für denselben Gang legt keine zweite an (dafür sorgt `Store::secured`),
       ein Aufruf für einen anderen Gang wieder eine, und `deleteRound` legt
       `vor-loeschen-…` an. Die Namen kollidieren nicht: die zweite in derselben
-      Minute heißt `…-1121-2.db`. Der Inhalt ist auch der richtige — in der ersten
-      Sicherung fehlt der Wert, der gleich danach geschrieben wurde. Was noch
+      Minute heißt `…-1121-2.db`. Der Inhalt ist auch der richtige — im ersten
+      Backup fehlt der Wert, der gleich danach geschrieben wurde. Was noch
       fehlt, ist der neue Bau, damit das auch im wirklichen Programm greift; das
       steht oben unter „In Arbeit".
 
@@ -243,16 +243,16 @@ _Zur Zeit nichts._
       Reiter, zurück, zu, dazu die dauerhafte Fläche im Kalender und das freie Fenster.
       `npm test` bei 42 von 42, `npm run check` bei 0,000000 kg Abweichung,
       `npm run typecheck` sauber, eslint unverändert bei zwei bekannten Anmerkungen.
-- [x] **Sicherungen: im Finder zeigen und von selbst sichern.** Zwei Sachen an
+- [x] **Backups: im Finder zeigen und von selbst sichern.** Zwei Sachen an
       einem Ort. Zum Zeigen führt ein eigener Befehl `revealPath`
       (`backup::reveal`): auf dem Mac `open -R`, unter Windows
       `explorer /select,`, sonst `xdg-open` auf den Ordner. Was gezeigt werden
-      darf, ist eng gefasst — die Datenbank selbst, der Sicherungsordner und was
+      darf, ist eng gefasst — die Datenbank selbst, der Backup-Ordner und was
       darin liegt; alles andere weist `reveal_path` in `lib.rs` ab („… gehört
       nicht zur Datenbank"), denn ein Befehl, der jeden Pfad öffnet, ist ein
       Loch. In den Einstellungen hängen daran drei Knöpfe: „Im Ordner zeigen"
-      beim Pfad, „Ordner öffnen" über der Liste und „Zeigen" an jeder einzelnen
-      Sicherung. Von selbst gesichert wird vor der ersten Änderung an einer
+      beim Pfad, „Ordner öffnen" über der Liste und „Zeigen" an jedem einzelnen
+      Backup. Von selbst gesichert wird vor der ersten Änderung an einer
       Messung und vor jedem Löschen (`secure` in `lib.rs`, Vorsätze
       `vor-messung` und `vor-loeschen` in `backup.rs`). Einmal je Messung, nicht
       einmal je Anschlag: welche Messung in diesem Programmlauf schon gesichert
@@ -418,7 +418,7 @@ _Zur Zeit nichts._
       fremdes Rust-Verzeichnis her (Latch, 27,8 GB), dazu der eigene
       `release`-Baum (0,9 GB), Android- und Flutter-Bauverzeichnisse aus
       anderen Projekten, Gradles lokaler Bau-Zwischenspeicher, die
-      Aktualisierungs-Zwischenspeicher mehrerer Anwendungen, `brew cleanup`
+      Update-Zwischenspeicher mehrerer Anwendungen, `brew cleanup`
       und `uv cache clean`. Die großen Dateien aus `~/Downloads` (ein
       Sprachmodell und sechs abgebrochene Bruchstücke, zusammen 6,4 GB) liegen
       jetzt auf der T7 unter `Mac-Auslagerung/Downloads-2026-08-04` —

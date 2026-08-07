@@ -7,8 +7,8 @@
 //! Eine nebenher kopierte Datei wäre ohne ihre `-wal`-Datei unvollständig, und
 //! zwar ohne dass man es ihr ansieht.
 //!
-//! Eine Sicherung überschreibt nie etwas: eine Sicherung, die eine ältere
-//! Sicherung zerstört, ist keine.
+//! Ein Backup überschreibt nie etwas: ein Backup, das ein älteres Backup
+//! zerstört, ist keines.
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -18,21 +18,23 @@ use rusqlite::{Connection, OpenFlags};
 
 use crate::model::{BackupFile, DbFile};
 
-/// Sicherungen ohne eigenes Ziel landen in diesem Ordner neben der Datenbank.
+/// Backups ohne eigenes Ziel landen in diesem Ordner neben der Datenbank. Der
+/// Ordnername bleibt deutsch: er liegt auf der Platte, und ihn umzubenennen
+/// hieße, die Backups zu verlieren, die dort schon liegen.
 const FOLDER: &str = "sicherungen";
 
-/// So viele Sicherungen zeigt die Übersicht; ältere liegen weiter im Ordner.
+/// So viele Backups zeigt die Übersicht; ältere liegen weiter im Ordner.
 const LISTED: usize = 40;
 
 /// Die Namen, unter denen das Programm von selbst sichert.
 ///
-/// Von Hand angelegte Sicherungen (`milch-…`) und die eine vor einer
+/// Von Hand angelegte Backups (`milch-…`) und die eine vor einer
 /// Wiederherstellung (`vor-wiederherstellung-…`) stehen bewusst nicht dabei:
 /// wer selbst sichert, will die Datei behalten, und die vor einer
 /// Wiederherstellung ist der einzige Weg zurück.
 pub const AUTO: &[&str] = &["vor-messung", "vor-loeschen"];
 
-/// So viele selbsttätige Sicherungen bleiben liegen. Beim Eintragen einer
+/// So viele selbsttätige Backups bleiben liegen. Beim Eintragen einer
 /// Messung entsteht eine je Messung — zehn reichen über einen Alpsommer
 /// zurück, ohne dass der Ordner zuwächst.
 pub const AUTO_KEEP: usize = 10;
@@ -52,7 +54,7 @@ const REQUIRED: &[&str] = &[
     "treatments",
 ];
 
-/// Der Sicherungsordner zu einer Datenbank.
+/// Der Backup-Ordner zu einer Datenbank.
 pub fn folder(db_path: &str) -> PathBuf {
     let parent = Path::new(db_path).parent().unwrap_or(Path::new(""));
     if parent.as_os_str().is_empty() {
@@ -74,7 +76,7 @@ pub fn stamp(conn: &Connection) -> String {
 }
 
 /// Was die Einstellungen über die Datei anzeigen: ihre Größe, ihr Alter und
-/// die Sicherungen, die daneben liegen.
+/// die Backups, die daneben liegen.
 pub fn describe(conn: &Connection, db_path: &str) -> DbFile {
     let dir = folder(db_path);
     DbFile {
@@ -88,7 +90,7 @@ pub fn describe(conn: &Connection, db_path: &str) -> DbFile {
 }
 
 /// Ob von selbst gesichert wird. Ohne Eintrag: ja — wer nichts eingestellt
-/// hat, will eher eine Sicherung zuviel als eine zuwenig.
+/// hat, will eher ein Backup zuviel als eines zuwenig.
 pub fn auto_enabled(conn: &Connection) -> bool {
     conn.query_row("SELECT value FROM meta WHERE key = ?1", [AUTO_KEY], |row| {
         row.get::<_, String>(0)
@@ -97,7 +99,7 @@ pub fn auto_enabled(conn: &Connection) -> bool {
     .unwrap_or(true)
 }
 
-/// Legt die überzähligen selbsttätigen Sicherungen ab, älteste zuerst.
+/// Legt die überzähligen selbsttätigen Backups ab, älteste zuerst.
 ///
 /// Gezählt wird über alle selbsttätigen Namen zusammen: der Ordner soll
 /// überschaubar bleiben, und ob eine Kopie vor einer Messung oder vor einem
@@ -173,7 +175,7 @@ pub fn reveal(path: &Path) -> Result<(), String> {
 
 /// Schreibt einen geschlossenen Stand an einen neuen Ort.
 ///
-/// Ohne Ziel entsteht ein Name aus dem Zeitpunkt im Sicherungsordner; ein
+/// Ohne Ziel entsteht ein Name aus dem Zeitpunkt im Backup-Ordner; ein
 /// angegebenes Ziel wird nie überschrieben, ein selbst vergebener Name weicht
 /// einem schon belegten aus.
 pub fn export(
@@ -207,7 +209,7 @@ pub fn export(
     conn.execute("VACUUM INTO ?1", [path.to_string_lossy().as_ref()])
         .map_err(|error| {
             format!(
-                "Die Sicherung nach {} ist fehlgeschlagen: {error}",
+                "Das Backup nach {} ist fehlgeschlagen: {error}",
                 path.display()
             )
         })?;
@@ -258,7 +260,7 @@ pub fn inspect(source: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// Löscht eine Sicherung. Nur im Sicherungsordner und nur `.db` — von hier aus
+/// Löscht ein Backup. Nur im Backup-Ordner und nur `.db` — von hier aus
 /// lässt sich nichts anderes im Dateisystem entfernen.
 pub fn remove(db_path: &str, target: &str) -> Result<String, String> {
     let path = PathBuf::from(target.trim());
@@ -271,7 +273,7 @@ pub fn remove(db_path: &str, target: &str) -> Result<String, String> {
     };
     if !inside || path.extension().and_then(|ext| ext.to_str()) != Some("db") {
         return Err(format!(
-            "{} liegt nicht im Sicherungsordner — von hier aus wird nichts anderes gelöscht.",
+            "{} liegt nicht im Backup-Ordner — von hier aus wird nichts anderes gelöscht.",
             path.display()
         ));
     }
@@ -324,7 +326,7 @@ fn free_name(dir: &Path, prefix: &str, stamp: &str) -> Result<PathBuf, String> {
     if !first.exists() {
         return Ok(first);
     }
-    // Zwei Sicherungen in derselben Minute sind selten, aber der Zeitstempel
+    // Zwei Backups in derselben Minute sind selten, aber der Zeitstempel
     // reicht dann eben nicht mehr aus.
     for nth in 2..100 {
         let next = dir.join(format!("{prefix}-{stamp}-{nth}.db"));
@@ -333,7 +335,7 @@ fn free_name(dir: &Path, prefix: &str, stamp: &str) -> Result<PathBuf, String> {
         }
     }
     Err(format!(
-        "Im Ordner {} liegen schon zu viele Sicherungen dieser Minute.",
+        "Im Ordner {} liegen schon zu viele Backups dieser Minute.",
         dir.display()
     ))
 }

@@ -54,16 +54,16 @@ fn sichert_und_stellt_wieder_her() {
     let store = Store::open(db.clone()).expect("Datenbank");
 
     add_farmer(&store, "Gruber");
-    let result = store.run("exportDb", json!({})).expect("Sicherung");
+    let result = store.run("exportDb", json!({})).expect("Backup");
     assert!(
         result.notice.unwrap_or_default().contains("sicherungen"),
-        "die Meldung nennt den Ort der Sicherung"
+        "die Meldung nennt den Ort des Backups"
     );
 
     let saved = backups(&store);
-    assert_eq!(saved.len(), 1, "eine Sicherung liegt im Ordner");
+    assert_eq!(saved.len(), 1, "ein Backup liegt im Ordner");
 
-    // Nach der Sicherung geht es weiter — genau dieser Stand soll gleich
+    // Nach dem Backup geht es weiter — genau dieser Stand soll gleich
     // verschwinden.
     add_farmer(&store, "Moosbrugger");
     assert_eq!(farmer_names(&store).len(), 2);
@@ -133,12 +133,12 @@ fn weist_fremde_dateien_ab() {
 }
 
 #[test]
-fn loescht_nur_im_sicherungsordner() {
+fn loescht_nur_im_backup_ordner() {
     let dir = scratch("loeschen");
     let db = dir.join("milch.db");
     let store = Store::open(db.clone()).expect("Datenbank");
     add_farmer(&store, "Unterberger");
-    store.run("exportDb", json!({})).expect("Sicherung");
+    store.run("exportDb", json!({})).expect("Backup");
 
     let fremd = dir.join("wichtig.db");
     fs::write(&fremd, b"nicht anfassen").expect("Datei");
@@ -148,19 +148,19 @@ fn loescht_nur_im_sicherungsordner() {
             json!({ "path": fremd.display().to_string() }),
         )
         .expect_err("außerhalb des Ordners");
-    assert!(error.contains("Sicherungsordner"), "{error}");
+    assert!(error.contains("Backup-Ordner"), "{error}");
     assert!(fremd.exists(), "die fremde Datei liegt noch da");
 
     let saved = backups(&store);
     store
         .run("deleteBackup", json!({ "path": saved[0].clone() }))
-        .expect("Sicherung gelöscht");
+        .expect("Backup gelöscht");
     assert!(backups(&store).is_empty());
     assert!(db.exists(), "die Datenbank selbst bleibt");
 }
 
 #[test]
-fn schreibt_keine_sicherung_ueber_eine_andere() {
+fn schreibt_kein_backup_ueber_ein_anderes() {
     let dir = scratch("kollision");
     let store = Store::open(dir.join("milch.db")).expect("Datenbank");
     add_farmer(&store, "Hinteregger");
@@ -171,7 +171,7 @@ fn schreibt_keine_sicherung_ueber_eine_andere() {
             "exportDb",
             json!({ "target": target.display().to_string() }),
         )
-        .expect("erste Sicherung");
+        .expect("erstes Backup");
 
     let error = store
         .run(
@@ -182,8 +182,8 @@ fn schreibt_keine_sicherung_ueber_eine_andere() {
     assert!(error.contains("gibt es schon"), "{error}");
 
     // Ohne Ziel weicht der Name aus, statt abzubrechen.
-    store.run("exportDb", json!({})).expect("zweite Sicherung");
-    store.run("exportDb", json!({})).expect("dritte Sicherung");
+    store.run("exportDb", json!({})).expect("zweites Backup");
+    store.run("exportDb", json!({})).expect("drittes Backup");
     assert_eq!(backups(&store).len(), 2);
 }
 

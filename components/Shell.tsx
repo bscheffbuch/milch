@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 
-import Aktualisierung from "@/components/Aktualisierung";
+import Update from "@/components/Update";
 import { DockProvider, DockRegion } from "@/components/Dock";
 import Nav, { type NavGroup } from "@/components/Nav";
 import { blockedCowsOn, daysSince } from "@/lib/calc/report";
@@ -110,8 +110,8 @@ function Frame({ children }: { children: React.ReactNode }) {
         Datei liegt und nicht auf dem Bildschirm. Von diesen beiden gibt es nie
         zwei zugleich, weil jeder Auftrag genau eines von beidem hinterlässt.
 
-        Die Aktualisierung ist die Ausnahme: sie hängt an keinem Auftrag,
-        sondern kommt beim Start von sich aus. Sie kann also neben einer der
+        Das Update ist die Ausnahme: es hängt an keinem Auftrag,
+        sondern kommt beim Start von sich aus. Es kann also neben einer der
         beiden Meldungen stehen, und darum stapelt die Ecke jetzt, statt jedem
         Stück eine feste Stelle zu geben. Übereinanderliegende Karten wären der
         einzige andere Ausgang gewesen.
@@ -132,7 +132,7 @@ function Frame({ children }: { children: React.ReactNode }) {
             </button>
           </div>
         ) : null}
-        <Aktualisierung />
+        <Update />
       </div>
     </div>
   );
