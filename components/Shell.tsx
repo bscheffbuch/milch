@@ -7,6 +7,7 @@ import { DockProvider, DockRegion } from "@/components/Dock";
 import Nav, { type NavGroup } from "@/components/Nav";
 import { blockedCowsOn, daysSince } from "@/lib/calc/report";
 import { DataProvider, useData } from "@/lib/data/store";
+import { LanguageProvider } from "@/lib/i18n";
 import { formatDateShort } from "@/lib/gemelk";
 
 /*
@@ -21,11 +22,13 @@ import { formatDateShort } from "@/lib/gemelk";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <DockProvider>
-      <DataProvider>
-        <Frame>{children}</Frame>
-      </DataProvider>
-    </DockProvider>
+    <LanguageProvider>
+      <DockProvider>
+        <DataProvider>
+          <Frame>{children}</Frame>
+        </DataProvider>
+      </DockProvider>
+    </LanguageProvider>
   );
 }
 

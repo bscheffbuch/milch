@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { inTauri } from "@/lib/data/client";
+import { useT } from "@/lib/i18n";
 
 import type { Update as UpdateInfo } from "@tauri-apps/plugin-updater";
 
@@ -57,6 +58,7 @@ function megabyte(bytes: number): string {
 }
 
 export default function Update() {
+  const t = useT();
   const [zustand, setZustand] = useState<Zustand>({ art: "still" });
 
   // Beim Entwickeln läuft jeder Effekt zweimal. Ohne diese Sperre ginge auch
@@ -79,14 +81,14 @@ export default function Update() {
         setZustand({ art: "gefunden", update });
       } catch (fehler) {
         // Siehe oben: beim Start wird nicht gemeldet, was niemand angestoßen hat.
-        console.warn("Das Update ließ sich nicht prüfen:", fehler);
+        console.warn(t("update.checkFailed"), fehler);
       }
     })();
 
     return () => {
       weg = true;
     };
-  }, []);
+  }, [t]);
 
   const einspielen = useCallback(async (update: UpdateInfo) => {
     setZustand({ art: "laedt", update, geladen: 0, gesamt: null });
@@ -130,10 +132,10 @@ export default function Update() {
       const { relaunch } = await import("@tauri-apps/plugin-process");
       await relaunch();
     } catch (fehler) {
-      console.warn("Der Neustart nach dem Update ging nicht:", fehler);
+      console.warn(t("update.restartFailed"), fehler);
       setZustand({ art: "neustart" });
     }
-  }, []);
+  }, [t]);
 
   if (zustand.art === "still") return null;
 
@@ -141,7 +143,7 @@ export default function Update() {
     return (
       <div className="update update-error no-print" role="alert">
         <div className="stack-sm">
-          <b>Das Update ist fehlgeschlagen</b>
+          <b>{t("update.failed")}</b>
           <span className="small">{zustand.meldung}</span>
         </div>
         <button
@@ -149,7 +151,7 @@ export default function Update() {
           onClick={() => setZustand({ art: "still" })}
           type="button"
         >
-          Schließen
+          {t("common.close")}
         </button>
       </div>
     );
@@ -161,11 +163,8 @@ export default function Update() {
     return (
       <div className="update no-print" role="status">
         <div className="stack-sm">
-          <b>Das Update ist eingespielt</b>
-          <span className="small muted">
-            Bitte das Programm einmal schließen und wieder öffnen — dann läuft
-            die neue Version.
-          </span>
+          <b>{t("update.installed")}</b>
+          <span className="small muted">{t("update.restartHint")}</span>
         </div>
       </div>
     );
@@ -181,13 +180,13 @@ export default function Update() {
         <div className="stack-sm">
           <b>
             {zustand.art === "bereit"
-              ? "Der Neustart wird vorbereitet"
-              : `Version ${zustand.update.version} wird geladen`}
+              ? t("update.preparingRestart")
+              : t("update.downloading", { version: zustand.update.version })}
           </b>
           <div
             className="update-bar"
             role="progressbar"
-            aria-label="Fortschritt des Updates"
+            aria-label={t("update.progressLabel")}
             aria-valuemin={0}
             aria-valuemax={100}
             /*
@@ -208,8 +207,12 @@ export default function Update() {
           </div>
           {zustand.art === "laedt" && (
             <span className="small muted num">
-              {megabyte(geladen)}
-              {gesamt ? ` von ${megabyte(gesamt)}` : ""} MB
+              {gesamt
+                ? t("update.loadedOf", {
+                    loaded: megabyte(geladen),
+                    total: megabyte(gesamt),
+                  })
+                : t("update.loaded", { loaded: megabyte(geladen) })}
             </span>
           )}
         </div>
@@ -222,7 +225,7 @@ export default function Update() {
   return (
     <div className="update no-print" role="status">
       <div className="stack-sm">
-        <b>Version {update.version} steht bereit</b>
+        <b>{t("update.ready", { version: update.version })}</b>
         {update.body && (
           <span className="small muted update-text">{update.body}</span>
         )}
@@ -232,14 +235,14 @@ export default function Update() {
             onClick={() => void einspielen(update)}
             type="button"
           >
-            Jetzt einspielen
+            {t("update.install")}
           </button>
           <button
             className="btn-quiet btn-sm"
             onClick={() => setZustand({ art: "still" })}
             type="button"
           >
-            Später
+            {t("update.later")}
           </button>
           <button
             className="btn-quiet btn-sm"
@@ -249,7 +252,7 @@ export default function Update() {
             }}
             type="button"
           >
-            Überspringen
+            {t("update.skip")}
           </button>
         </div>
       </div>
