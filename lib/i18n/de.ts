@@ -27,7 +27,7 @@ export const de = {
 
   update: {
     failed: "Das Update ist fehlgeschlagen",
-    installed: "Das Update ist eingespielt",
+    installed: "Das Update ist installiert",
     restartHint:
       "Bitte das Programm einmal schließen und wieder öffnen — dann läuft die neue Version.",
     preparingRestart: "Der Neustart wird vorbereitet",
@@ -37,7 +37,7 @@ export const de = {
     loadedOf: "{loaded} von {total} MB",
     loaded: "{loaded} MB",
     ready: "Version {version} steht bereit",
-    install: "Jetzt einspielen",
+    install: "Jetzt installieren",
     later: "Später",
     skip: "Überspringen",
     checkFailed: "Das Update ließ sich nicht prüfen:",

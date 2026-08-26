@@ -3798,17 +3798,52 @@ legend {
   min-width: 0;
 }
 
-/* Der Text kommt aus dem Release und bringt eigene Zeilenumbrüche mit; ohne
-   pre-line liefe er zu einem Absatz zusammen. Markdown wird bewusst nicht
-   ausgewertet — die Karte ist keine Textanzeige, sie ist eine Frage. Deshalb
-   auch die Höhenbegrenzung: was länger ist, steht auf der Release-Seite. */
+/*
+  Markdown, wie es aus einem Release kommt: Absätze, Aufzählungen, ein
+  gelegentlicher Titel. Gesetzt wird es eng — es steht in einer Karte und nicht
+  auf einer Seite —, aber gesetzt wird es. Übersetzt wird der Text in
+  `components/Markdown.tsx`.
+*/
+.md > * {
+  margin: 0;
+}
+
+.md > * + * {
+  margin-top: 0.5em;
+}
+
+.md-titel {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.md ul {
+  padding-left: 1.1em;
+  list-style: disc;
+}
+
+.md li + li {
+  margin-top: 0.2em;
+}
+
+/* Es gibt sonst nirgends im Programm Code in einem Satz — deshalb steht die
+   Schrift dafür hier und nicht bei den Variablen oben. */
+.md code {
+  padding: 0 3px;
+  border-radius: 3px;
+  background: var(--surface-3);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.88em;
+}
+
+/* Die Höhenbegrenzung bleibt: was länger ist als ein paar Absätze, ist keine
+   Frage mehr, sondern ein Text, und der steht auf der Release-Seite. */
 .update-text {
-  white-space: pre-line;
-  max-height: 7.5em;
+  max-height: 10em;
   overflow-y: auto;
 }
 
-/* Ein Fehlschlag beim Einspielen trägt denselben Ton wie jeder andere. */
+/* Ein Fehlschlag beim Installieren trägt denselben Ton wie jeder andere. */
 .update-error {
   border-color: var(--alert-border);
   background: var(--alert-bg);

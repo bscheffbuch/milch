@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import Markdown from "@/components/Markdown";
 import { inTauri } from "@/lib/data/client";
 import { useT } from "@/lib/i18n";
 
@@ -21,7 +22,7 @@ import type { Update as UpdateInfo } from "@tauri-apps/plugin-updater";
   Aus demselben Grund ist die Prüfung beim Start stumm. Wer das Programm
   öffnet, wartet auf die Saison und nicht auf eine Auskunft über GitHub — ist
   kein Netz da, geht das niemanden etwas an. Erst wenn jemand selbst auf
-  „Jetzt einspielen“ gedrückt hat und *das* scheitert, steht eine Meldung da,
+  „Jetzt installieren“ gedrückt hat und *das* scheitert, steht eine Meldung da,
   denn dann wartet jemand auf ein Ergebnis.
 
   Die Prüfung läuft nur im Programmfenster. Im Browser — beim Entwickeln und
@@ -90,7 +91,7 @@ export default function Update() {
     };
   }, [t]);
 
-  const einspielen = useCallback(async (update: UpdateInfo) => {
+  const installieren = useCallback(async (update: UpdateInfo) => {
     setZustand({ art: "laedt", update, geladen: 0, gesamt: null });
 
     try {
@@ -120,7 +121,7 @@ export default function Update() {
 
     /*
       Der Neustart steht mit Absicht außerhalb des Blocks darüber: hier ist
-      die neue Version bereits eingespielt. Scheiterte nur noch das Neustarten
+      die neue Version bereits installiert. Scheiterte nur noch das Neustarten
       und stünde dann „fehlgeschlagen“ da, wäre das schlicht falsch — es fehlt
       dann bloß der letzte Schritt, und den kann jeder selbst tun.
 
@@ -227,12 +228,12 @@ export default function Update() {
       <div className="stack-sm">
         <b>{t("update.ready", { version: update.version })}</b>
         {update.body && (
-          <span className="small muted update-text">{update.body}</span>
+          <Markdown className="small muted update-text" text={update.body} />
         )}
         <div className="row">
           <button
             className="btn-sm btn-primary"
-            onClick={() => void einspielen(update)}
+            onClick={() => void installieren(update)}
             type="button"
           >
             {t("update.install")}

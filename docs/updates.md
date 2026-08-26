@@ -8,7 +8,7 @@ wenn alles aktuell ist — ein Normalzustand braucht keine Anzeige, gemeldet wir
 nur, was eine Entscheidung verlangt. Aus demselben Grund ist auch ein
 gescheiterter Abruf beim Start stumm: wer das Programm öffnet, wartet auf die
 Saison und nicht auf eine Auskunft über GitHub. Erst wenn jemand selbst auf
-„Jetzt einspielen“ gedrückt hat und _das_ scheitert, steht eine Meldung da.
+„Jetzt installieren“ gedrückt hat und _das_ scheitert, steht eine Meldung da.
 
 Beteiligt sind vier Stellen:
 
@@ -64,7 +64,7 @@ mehr eine Fehlermeldung erwartet.
 
 Die Komponente fängt diesen Fall ab: scheitert nur noch der Neustart, steht dort
 nicht „fehlgeschlagen", sondern die Bitte, das Programm einmal von Hand zu
-schließen und wieder zu öffnen. Das ist die Wahrheit — eingespielt ist es dann
+schließen und wieder zu öffnen. Das ist die Wahrheit — installiert ist es dann
 längst. Die Zeile trotzdem stehenzulassen wäre aber nachlässig, deshalb hält der
 `description`-Text der Datei fest, warum sie da ist.
 
@@ -175,11 +175,15 @@ Release und wird davon nicht berührt — die Karte zeigt weiterhin den alten
 Text. Wer nachbessert, muss die `latest.json` also mit ändern und neu hochladen,
 oder gleich die Datei im Repository richtigstellen und neu bauen.
 
-Weil derselbe Text in der Karte landet, gehört er kurz gehalten. Die Karte ist
-schmal, wertet kein Markdown aus und zeigt nur Zeilenumbrüche; Überschriften und
-Tabellen stehen dort als Zeichen da, was sie sind. Was ausführlich sein muss —
-welche Datei man lädt, was beim ersten Start passiert — steht besser in der
-README und wird verlinkt. Die erste Version macht davon eine Ausnahme: bei ihr
+Weil derselbe Text in der Karte landet, gehört er kurz gehalten. Seit 0.2.1
+setzt die Karte ihn als Markdown — `components/Markdown.tsx` übersetzt so viel
+davon, wie in einem Absatz Prosa vorkommt: Titel, Absätze, Striche, fett,
+kursiv, Code. Tabellen kann sie nicht, und Verweise werden zu ihrer bloßen
+Beschriftung, weil ein Klick das Fenster aus dem Programm herausführte. Die
+Karte ist mit vierhundert Pixeln außerdem schmal und auf gut sieben Zeilen
+begrenzt; was länger ist, muss man in ihr scrollen. Was ausführlich sein muss —
+welche Datei man lädt, was beim ersten Start passiert — steht deshalb in der
+README und nicht hier. Die erste Version macht davon eine Ausnahme: bei ihr
 sieht niemand eine Karte, weil es nichts gibt, was sich aktualisieren könnte.
 
 Auf dem eigenen Rechner bauen — für einen Blick auf das Paket, nicht für eine

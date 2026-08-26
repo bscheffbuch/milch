@@ -4,6 +4,40 @@ Milchmenge, Messungen, Behandlungen und die Käseabrechnung einer Alpsaison.
 Ein Programm für den eigenen Rechner: kein Konto, kein Server, keine Cloud.
 Alles steht in **einer** Datei, und ein Backup heißt, diese Datei zu kopieren.
 
+## Installieren
+
+Die fertigen Pakete liegen bei den
+[Releases](https://github.com/bscheffbuch/milch/releases). Zu laden ist genau
+eine Datei:
+
+|                       |                              |
+| --------------------- | ---------------------------- |
+| Mac mit Apple Silicon | `Milch_<Version>_aarch64.dmg`  |
+| Mac mit Intel         | `Milch_<Version>_x64.dmg`      |
+| Windows               | `Milch_<Version>_x64-setup.exe` |
+| Linux                 | `Milch_<Version>_amd64.AppImage` |
+
+Daneben liegen für Windows ein `.msi` und für Linux ein `.deb` und ein `.rpm`,
+falls jemand sie lieber über den Paketmanager installiert. Die Dateien mit der
+Endung `.sig`, die `.app.tar.gz` und die `latest.json` gehören zum
+Update-Mechanismus und müssen nicht heruntergeladen werden.
+
+Wer schon eine ältere Version hat, lädt gar nichts: das Programm meldet sich
+beim Start von selbst und installiert die neue auf Wunsch.
+
+### Beim ersten Start
+
+Die Pakete sind nicht bei Apple beziehungsweise Microsoft signiert — das kostet
+Geld und beantwortet eine Frage, die hier niemand hat. Beide Systeme warnen
+deshalb **einmal**, beim ersten Öffnen:
+
+- **macOS** meldet, das Programm sei „beschädigt“. Das stimmt nicht, es fehlt
+  nur die Signatur. Meldung wegklicken, dann Systemeinstellungen → Datenschutz
+  & Sicherheit → ganz nach unten scrollen → „Dennoch öffnen“.
+- **Windows** zeigt „Der Computer wurde durch Windows geschützt“. Über „Weitere
+  Informationen“ erscheint „Trotzdem ausführen“.
+- **Linux** fragt nicht.
+
 ## Aufbau
 
 Zwei Hälften, eine Naht:
