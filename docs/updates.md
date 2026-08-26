@@ -175,7 +175,15 @@ Release und wird davon nicht berührt — die Karte zeigt weiterhin den alten
 Text. Wer nachbessert, muss die `latest.json` also mit ändern und neu hochladen,
 oder gleich die Datei im Repository richtigstellen und neu bauen.
 
-Weil derselbe Text in der Karte landet, gehört er kurz gehalten. Seit 0.2.1
+Der Ton ist der eines Änderungsprotokolls und nicht der einer Ankündigung: ein
+Stichpunkt je Änderung, das Wichtigste zuerst, kein Vorwort und kein Schluss.
+Ein Stichpunkt nennt, was das Programm jetzt kann und wonach es sich richtet —
+nicht, wofür es gut ist, was daran schön ist und schon gar nicht, wie mühsam es
+war. Kein Wort steht da, um den Absatz zu füllen. Was sich nicht in zwei bis
+drei Zeilen sagen lässt, ist keine Notiz zur Version, sondern Doku und gehört
+in die README.
+
+Weil derselbe Text in der Karte landet, gehört er ohnehin kurz gehalten. Seit 0.2.1
 setzt die Karte ihn als Markdown — `components/Markdown.tsx` übersetzt so viel
 davon, wie in einem Absatz Prosa vorkommt: Titel, Absätze, Striche, fett,
 kursiv, Code. Tabellen kann sie nicht, und Verweise werden zu ihrer bloßen
