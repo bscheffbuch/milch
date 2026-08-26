@@ -346,6 +346,23 @@ export function useActions() {
       });
     };
 
+    /* --------------------------------------------------------- Alpkäse */
+
+    /** Käse, den die Alp selbst hergibt — er geht am Ende allen zusammen ab. */
+    const createAlpCheese: Action = async (data) => {
+      const seasonId = int(data, "seasonId");
+      const kg = optNum(data, "kg");
+      if (!seasonId || kg === null) return;
+
+      await run("createAlpCheese", { seasonId, kg, note: optStr(data, "note") });
+    };
+
+    const deleteAlpCheese: Action = async (data) => {
+      const id = int(data, "id");
+      if (!id) return;
+      await run("deleteAlpCheese", { id });
+    };
+
     /* ------------------------------------------------------- Abholungen */
 
     const createPickup: Action = async (data) => {
@@ -491,6 +508,8 @@ export function useActions() {
       saveProduction,
       saveProductionDays,
       saveProductionRange,
+      createAlpCheese,
+      deleteAlpCheese,
       createPickup,
       deletePickup,
       updateSeason,

@@ -21,6 +21,48 @@ _Zur Zeit nichts._
 
 ## Erledigt und geprüft
 
+- [x] **Alpkäse — was die Alp selbst isst und was Helfer mitnehmen.** Am
+      26.08.2026 auf Wunsch des Benutzers. Eine eigene Seite (`/alpkaese/`) und
+      eine eigene Tabelle (`alp_cheese`, Schemastand 6): je Entnahme ein
+      Eintrag mit Menge und einer Notiz — ein Verbrauchsbuch, kein Kalender.
+
+      Ein Datum trägt der Eintrag bewusst nicht. Wer im Herbst einen Laib
+      mitnimmt, kann nicht sagen, aus welchem Kessel er stammt, und die Alp
+      führt darüber kein Buch; ein erfundener Tag wäre schlechter als gar
+      keiner, weil er eine Genauigkeit vortäuschte, die es nicht gibt, und die
+      Tagesabrechnung verschöbe. Zwei Zwischenstände sind unterwegs verworfen
+      worden: erst ein Datum je Eintrag (Stand 4), dann ein freiwilliges Datum,
+      dessen Fehlen über die Produktionstage verteilt wurde (Stand 5). Der
+      Benutzer wollte beides nicht — „es soll wirklich ganz ohne zeit einfach
+      stand jetzt sein".
+
+      Deshalb geht der Alpkäse gar nicht in den Rechenkern. Der rechnet
+      unverändert Tag für Tag und Monat für Monat weiter; der Alpkäse wird erst
+      danach abgezogen, in `buildFarmerBalances`, und zwar vom offenen Stand:
+      jeder trägt davon den Anteil, der seinem Anspruch über die Saison
+      entspricht. Damit verschiebt ein nachgetragener Eintrag keinen bereits
+      abgeschlossenen Monat — er mindert nur, was noch offen ist. Steht noch
+      niemandem Käse zu, bleibt der Betrag liegen; die Seite sagt das dann auch.
+
+      Der eingestellte Abzug bleibt daneben bestehen und unverändert: er ist
+      eine Rate, die Tag für Tag greift und am Käse des Tages gedeckelt wird,
+      der Alpkäse eine gewogene Menge ohne Zeit. Beides in eines zu ziehen ging
+      nicht, ohne dem einen die Zeitrechnung aufzuzwingen, die das andere
+      gerade loswerden sollte.
+
+      Sichtbar in der Abrechnung (eigene Spalte je Bauer im Käsekonto der
+      ganzen Saison, Beisatz unter „Verteilt", eigene Zeile in „Wie gerechnet
+      wird") und in der Übersicht (Kachel „Käse verteilbar" zeigt jetzt
+      `distributableKg`, Beisatz nennt Abzug und Alpkäse einzeln). Im Kalender
+      steht er bewusst nicht — er gehört zu keinem Tag.
+
+      Geprüft: `npm test` 52 Tests grün, darunter drei neue zum Alpkäse
+      (100 kg auf eine Saison im Verhältnis 3:1 werden zu 75/25 kg, die
+      Junizeile bleibt dabei unberührt bei 900 kg; ohne jeden Anspruch bleibt
+      der Betrag liegen; die Saisonzahlen weisen `distributableKg` aus);
+      `npm run typecheck`, `npm run build` und `eslint` ohne Fehler, die Seite
+      steht im Bau; `cargo test` grün.
+
 - [x] **Eine eigene Auswahlliste für das ganze Programm — die des Betriebssystems
       ist überall verschwunden.** Am 06.08.2026 auf Wunsch des Benutzers. Der
       Anlass war die Kuhwahl beim Eintragen einer Behandlung: dort standen drei

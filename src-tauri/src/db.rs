@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 
 use rusqlite::Connection;
 
-pub const SCHEMA_VERSION: i64 = 3;
+pub const SCHEMA_VERSION: i64 = 6;
 
 /// Die beiden PRAGMA-Zeilen stehen bewusst nicht hier, sondern in [`open`] —
 /// `journal_mode` liefert eine Ergebniszeile zurück und würde einen Stapellauf
@@ -127,6 +127,23 @@ CREATE TABLE IF NOT EXISTS cheese_production (
   UNIQUE(season_id, date)
 );
 
+-- Käse, den die Alp selbst hergibt: was in der Hütte gegessen wird und was
+-- Helfer als Lohn mitnehmen dürfen. Er gehört keinem Bauern allein und wird
+-- deshalb am Ende von dem abgezogen, was zu verteilen ist — getragen wird er
+-- von allen, im Verhältnis ihres Käses.
+--
+-- Hier steht bewusst kein Datum. Wer im Herbst einen Laib mitnimmt, kann nicht
+-- sagen, aus welchem Kessel er stammt, und die Alp führt darüber kein Buch. Ein
+-- erfundener Tag wäre schlechter als gar keiner: er würde eine Genauigkeit
+-- vortäuschen, die es nicht gibt, und die Tagesabrechnung verschieben.
+CREATE TABLE IF NOT EXISTS alp_cheese (
+  id        INTEGER PRIMARY KEY,
+  season_id INTEGER NOT NULL REFERENCES seasons(id) ON DELETE CASCADE,
+  kg        REAL    NOT NULL,
+  note      TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_alp_cheese_season ON alp_cheese(season_id);
+
 CREATE TABLE IF NOT EXISTS pickups (
   id        INTEGER PRIMARY KEY,
   season_id INTEGER NOT NULL REFERENCES seasons(id)  ON DELETE CASCADE,
@@ -208,6 +225,20 @@ pub fn open(path: &Path) -> rusqlite::Result<Connection> {
 /// Version 3: Das Ende einer Behandlung darf offen bleiben. SQLite kann eine
 /// Spalte nicht von `NOT NULL` befreien — die Tabelle wird deshalb neben der
 /// alten neu gebaut und der Inhalt hinübergeschrieben.
+///
+/// Version 4: Der Alpkäse bekommt eine eigene Tabelle. Sie ist neu und leer —
+/// `CREATE TABLE IF NOT EXISTS` legt sie auch in einer bestehenden Datenbank
+/// an, hier bleibt deshalb nichts zu tun.
+///
+/// Version 5: Der Alpkäse darf ohne Datum eingetragen werden. Wie bei den
+/// Behandlungen kann SQLite die Spalte nicht nachträglich von `NOT NULL`
+/// befreien; die Tabelle wird deshalb neu gebaut und der Inhalt hinüber-
+/// geschrieben.
+///
+/// Version 6: Der Alpkäse trägt gar kein Datum mehr. Er wird nicht mehr auf
+/// Tage verteilt, sondern am Ende von dem abgezogen, was zu verteilen ist — die
+/// Spalte fällt deshalb ganz weg. Die Mengen bleiben; nur der Tag geht dabei
+/// verloren, und den gab es in Wahrheit ohnehin nicht.
 fn migrate(conn: &Connection) -> rusqlite::Result<()> {
     let has_old: i64 = conn.query_row(
         "SELECT COUNT(*) FROM pragma_table_info('measurement_values') WHERE name = 'first_kg'",
@@ -254,6 +285,33 @@ fn migrate(conn: &Connection) -> rusqlite::Result<()> {
               FROM treatments_v2;
             DROP TABLE treatments_v2;
             CREATE INDEX IF NOT EXISTS idx_treatments_season ON treatments(season_id, cow_id);
+            COMMIT;
+            PRAGMA foreign_keys = on;
+            "#,
+        )?;
+    }
+
+    let alp_has_date: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM pragma_table_info('alp_cheese') WHERE name = 'date'",
+        [],
+        |row| row.get(0),
+    )?;
+    if alp_has_date > 0 {
+        conn.execute_batch(
+            r#"
+            PRAGMA foreign_keys = off;
+            BEGIN;
+            DROP INDEX IF EXISTS idx_alp_cheese_season;
+            ALTER TABLE alp_cheese RENAME TO alp_cheese_alt;
+            CREATE TABLE alp_cheese (
+              id        INTEGER PRIMARY KEY,
+              season_id INTEGER NOT NULL REFERENCES seasons(id) ON DELETE CASCADE,
+              kg        REAL    NOT NULL,
+              note      TEXT
+            );
+            INSERT INTO alp_cheese SELECT id, season_id, kg, note FROM alp_cheese_alt;
+            DROP TABLE alp_cheese_alt;
+            CREATE INDEX IF NOT EXISTS idx_alp_cheese_season ON alp_cheese(season_id);
             COMMIT;
             PRAGMA foreign_keys = on;
             "#,

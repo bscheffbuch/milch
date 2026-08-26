@@ -13,6 +13,7 @@ export type NavIconName =
   | "messung"
   | "behandlung"
   | "abholung"
+  | "alpkaese"
   | "abrechnung"
   | "herde"
   | "bauern"
@@ -68,6 +69,19 @@ const SHAPES: Record<NavIconName, React.ReactNode> = {
       <path d="M3 9.6v2.6a1.6 1.6 0 0 0 1.6 1.6h6.8a1.6 1.6 0 0 0 1.6-1.6V9.6" />
       <path d="M8 10.4V2.6" />
       <path d="M5.2 5.4 8 2.6l2.8 2.8" />
+    </>
+  ),
+  /*
+    Ein angeschnittenes Stück Käse — der Laib von der Seite, mit dem Keil
+    heraus. Es meint den Käse, der auf der Alp bleibt, und darf deshalb dem
+    Pfeil der Abholung nicht ähneln: dort geht etwas fort, hier wird etwas
+    abgeschnitten. Die beiden Löcher tragen die Erkennbarkeit bei 16 Pixeln.
+  */
+  alpkaese: (
+    <>
+      <path d="M2.2 6.4 8 3.2l5.8 3.2v4.1a1.5 1.5 0 0 1-1.5 1.5H3.7a1.5 1.5 0 0 1-1.5-1.5z" />
+      <path d="M2.2 6.4h11.6" />
+      <path d="M5.6 8.9v.05M9.9 9.6v.05" />
     </>
   ),
   abrechnung: (

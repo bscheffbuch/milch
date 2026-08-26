@@ -26,12 +26,18 @@ export interface FarmerBalance {
   farmerId: number;
   /** Käse, der dem Bauern bis zum Stichtag zusteht — abgeschlossen und laufend. */
   entitledKg: number;
+  /**
+   * Was dieser Bauer vom Alpkäse trägt, im Verhältnis seines Anspruchs. Der
+   * Alpkäse hat kein Datum und steht deshalb in keinem Monat — er mindert den
+   * offenen Stand als Ganzes, nicht einen einzelnen Monat.
+   */
+  alpKg: number;
   /** Nur die abgeschlossenen Monate: der abgerechnete Anspruch. */
   settledKg: number;
   /** Was im laufenden Monat bis heute dazugekommen ist — der Schatten. */
   ghostKg: number;
   pickedUpKg: number;
-  /** Positiv = steht noch aus, negativ = zu viel abgeholt. */
+  /** Positiv = steht noch aus, negativ = zu viel abgeholt. Alpkäse ist schon ab. */
   outstandingKg: number;
   /** Dasselbe, aber ohne den laufenden Monat: der abgerechnete Stand. */
   settledOutstandingKg: number;
@@ -48,7 +54,12 @@ export interface FarmerBalance {
 export interface SeasonTotals {
   producedKg: number;
   deductionKg: number;
+  /** Käse, den die Alp selbst hergegeben hat — ohne Datum, für die ganze Saison. */
+  alpKg: number;
+  /** Käse nach dem eingestellten Abzug, aber noch vor dem Alpkäse. */
   netCheeseKg: number;
+  /** Was nach Abzug und Alpkäse zu verteilen bleibt. */
+  distributableKg: number;
   unallocatedKg: number;
   usableMilkL: number;
   blockedMilkL: number;
@@ -74,12 +85,19 @@ interface PickupLike {
  * Der Monat, in dem der Stichtag liegt, ist noch nicht fertig. Sein Anspruch
  * steht deshalb getrennt als `ghostKg` daneben: der Zwischenstand, der bis
  * heute dazugekommen ist. `settledKg` ist, was bereits abgerechnet ist.
+ *
+ * Der Alpkäse fällt aus dieser Ordnung heraus: er trägt kein Datum und gehört
+ * darum in keinen Monat. Er wird deshalb nicht im Kontolauf mitgeführt, sondern
+ * am Ende vom offenen Stand abgezogen — jeder Bauer im Verhältnis seines
+ * Anspruchs. Die Monatszeilen bleiben dadurch das, was sie sind: die Herleitung
+ * des Anspruchs, unberührt davon, wann jemand einen Laib mitgenommen hat.
  */
 export function buildFarmerBalances(
   result: EngineResult,
   pickups: PickupLike[],
   cowCountByFarmer: Map<number, number>,
   upToDate: string,
+  alpCheeseKg = 0,
 ): FarmerBalance[] {
   const usable = new Map<number, number>();
   const blocked = new Map<number, number>();
@@ -175,6 +193,7 @@ export function buildFarmerBalances(
     balances.push({
       farmerId,
       entitledKg: settledKg + ghostKg,
+      alpKg: 0,
       settledKg,
       ghostKg,
       pickedUpKg,
@@ -189,6 +208,21 @@ export function buildFarmerBalances(
     });
   }
 
+  /*
+    Erst jetzt, wo alle Ansprüche stehen, lässt sich der Alpkäse aufteilen: er
+    fällt auf die Bauern im Verhältnis ihres Anspruchs — wer mehr Käse zugute
+    hat, trägt mehr davon. Steht noch kein Anspruch da, bleibt er liegen; es
+    gäbe sonst niemanden, dem er anzurechnen wäre.
+  */
+  const totalEntitledKg = balances.reduce((sum, row) => sum + row.entitledKg, 0);
+  if (alpCheeseKg > 0 && totalEntitledKg > 0) {
+    for (const balance of balances) {
+      balance.alpKg = (alpCheeseKg * balance.entitledKg) / totalEntitledKg;
+      balance.outstandingKg -= balance.alpKg;
+      balance.settledOutstandingKg -= balance.alpKg;
+    }
+  }
+
   balances.sort((a, b) => b.entitledKg - a.entitledKg);
   return balances;
 }
@@ -197,6 +231,7 @@ export function buildSeasonTotals(
   result: EngineResult,
   pickups: PickupLike[],
   upToDate: string,
+  alpCheeseKg = 0,
 ): SeasonTotals {
   let producedKg = 0;
   let deductionKg = 0;
@@ -222,10 +257,14 @@ export function buildSeasonTotals(
     if (pickup.date <= upToDate) pickedUpKg += pickup.kg;
   }
 
+  const alpKg = Math.max(0, alpCheeseKg);
+
   return {
     producedKg,
     deductionKg,
+    alpKg,
     netCheeseKg,
+    distributableKg: netCheeseKg - alpKg,
     unallocatedKg,
     usableMilkL,
     blockedMilkL,

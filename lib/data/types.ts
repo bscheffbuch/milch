@@ -126,6 +126,19 @@ export interface CheeseProduction {
   note: string | null;
 }
 
+/**
+ * Käse, den die Alp selbst verbraucht — ein Eintrag je Entnahme.
+ *
+ * Anders als eine Abholung gehört er keinem Bauern: er wird vor der Verteilung
+ * vom Käse seines Tages abgezogen und damit von allen getragen.
+ */
+export interface AlpCheese {
+  id: number;
+  seasonId: number;
+  kg: number;
+  note: string | null;
+}
+
 export interface Pickup {
   id: number;
   seasonId: number;
@@ -180,6 +193,8 @@ export interface Snapshot {
   treatmentTypes: TreatmentType[];
   treatments: Treatment[];
   production: CheeseProduction[];
+  /** Neueste zuerst. */
+  alpCheese: AlpCheese[];
   pickups: Pickup[];
 }
 

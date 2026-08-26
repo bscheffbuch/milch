@@ -8,6 +8,7 @@ import type { FarmerBalance, MonthSummary, SeasonTotals } from "@/lib/calc/repor
 import type { EngineResult } from "@/lib/calc/types";
 import { engineInput } from "@/lib/data/select";
 import type {
+  AlpCheese,
   CheeseProduction,
   CowSeason,
   Farmer,
@@ -49,6 +50,8 @@ export interface SeasonView {
   treatmentTypes: TreatmentType[];
   production: CheeseProduction[];
   productionByDate: Map<string, CheeseProduction>;
+  /** Käse, den die Alp selbst hergegeben hat — neuester Eintrag zuerst. */
+  alpCheese: AlpCheese[];
   pickups: Pickup[];
   result: EngineResult;
   totals: SeasonTotals;
@@ -90,6 +93,10 @@ export function buildSeasonView(snapshot: Snapshot): SeasonView | null {
   const result = runEngine(engineInput(snapshot, season, asOf));
   const producedDays = snapshot.production.filter((entry) => entry.kg > 0);
 
+  // Der Alpkäse geht nicht in den Rechenkern: er hat kein Datum und damit auch
+  // keinen Tag, an dem er anfallen könnte. Abgezogen wird er erst danach.
+  const alpCheeseKg = snapshot.alpCheese.reduce((sum, entry) => sum + entry.kg, 0);
+
   return {
     season,
     seasons: snapshot.seasons,
@@ -109,11 +116,18 @@ export function buildSeasonView(snapshot: Snapshot): SeasonView | null {
     treatmentTypes: snapshot.treatmentTypes.filter((type) => type.archived === 0),
     production: snapshot.production,
     productionByDate: new Map(snapshot.production.map((entry) => [entry.date, entry])),
+    alpCheese: snapshot.alpCheese,
     pickups: snapshot.pickups,
     result,
-    totals: buildSeasonTotals(result, snapshot.pickups, asOf),
+    totals: buildSeasonTotals(result, snapshot.pickups, asOf, alpCheeseKg),
     months: buildMonthSummaries(result, asOf),
-    balances: buildFarmerBalances(result, snapshot.pickups, cowCountByFarmer, asOf),
+    balances: buildFarmerBalances(
+      result,
+      snapshot.pickups,
+      cowCountByFarmer,
+      asOf,
+      alpCheeseKg,
+    ),
     cowCountByFarmer,
     lastProductionDate: producedDays.at(-1)?.date ?? null,
     lastRoundDate: snapshot.rounds.at(-1)?.firstDate ?? null,

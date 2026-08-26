@@ -61,6 +61,7 @@ function Frame({ children }: { children: React.ReactNode }) {
           badge: blockedNow > 0 ? String(blockedNow) : undefined,
         },
         { href: "/abholungen/", label: "Abholungen", icon: "abholung" },
+        { href: "/alpkaese/", label: "Alpkäse", icon: "alpkaese" },
       ],
     },
     {

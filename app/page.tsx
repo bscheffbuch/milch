@@ -5,6 +5,7 @@ import Link from "next/link";
 import NoSeason from "@/components/NoSeason";
 import { CowLink, FarmerLink } from "@/components/Preview";
 import { Bars, Empty, Ghost, MiniBar, Sparkline, Stat } from "@/components/ui";
+import type { SeasonTotals } from "@/lib/calc/report";
 import { blockedCowsOn, daysSince } from "@/lib/calc/report";
 import { useSeasonView } from "@/lib/data/store";
 import { kg, kg0, liter, liter0, pct } from "@/lib/format";
@@ -16,6 +17,21 @@ import {
   isoFromDayIndex,
 } from "@/lib/gemelk";
 import { cowLabel } from "@/lib/view";
+
+/**
+ * Der Beisatz unter dem verteilbaren Käse. Abzug und Alpkäse mindern beide, was
+ * bei den Bauern ankommt, sind aber verschiedene Dinge — die Rate, die Tag für
+ * Tag greift, und die gegessene Menge, die am Ende abgeht —, deshalb werden sie
+ * einzeln genannt. Kommt keines von beiden vor, sagt der Beisatz stattdessen,
+ * über wie viele Tage die Menge zusammenkam.
+ */
+function cheeseNote(totals: SeasonTotals): string {
+  const parts: string[] = [];
+  if (totals.deductionKg > 0) parts.push(`${kg(totals.deductionKg)} kg Abzug`);
+  if (totals.alpKg > 0) parts.push(`${kg(totals.alpKg)} kg Alpkäse`);
+  if (parts.length === 0) return `an ${totals.productionDays} Produktionstagen`;
+  return [`${kg0(totals.producedKg)} kg produziert`, ...parts].join(", ");
+}
 
 export default function Page() {
   const view = useSeasonView();
@@ -95,13 +111,9 @@ export default function Page() {
         <div className="grid grid-4">
           <Stat
             label="Käse verteilbar"
-            value={kg0(totals.netCheeseKg)}
+            value={kg0(totals.distributableKg)}
             unit="kg"
-            note={
-              totals.deductionKg > 0
-                ? `${kg0(totals.producedKg)} kg produziert, ${kg(totals.deductionKg)} kg Abzug`
-                : `an ${totals.productionDays} Produktionstagen`
-            }
+            note={cheeseNote(totals)}
           />
           <Stat
             label="Milch verwertbar"

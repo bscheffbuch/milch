@@ -147,6 +147,19 @@ pub struct CheeseProduction {
     pub note: Option<String>,
 }
 
+/// Käse, den die Alp selbst hergibt — ein Eintrag je Entnahme, ohne Datum.
+///
+/// Anders als eine Abholung gehört er keinem Bauern: er wird am Ende von dem
+/// abgezogen, was zu verteilen ist, und damit von allen getragen.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AlpCheese {
+    pub id: i64,
+    pub season_id: i64,
+    pub kg: f64,
+    pub note: Option<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Pickup {
@@ -214,6 +227,7 @@ pub struct Snapshot {
     pub treatment_types: Vec<TreatmentType>,
     pub treatments: Vec<Treatment>,
     pub production: Vec<CheeseProduction>,
+    pub alp_cheese: Vec<AlpCheese>,
     pub pickups: Vec<Pickup>,
 }
 

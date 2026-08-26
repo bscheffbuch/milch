@@ -1,29 +1,41 @@
-Die erste Version von Milch — dem Programm für die Abrechnung einer Alpsaison.
+Neu in dieser Fassung: der Alpkäse.
 
-Es führt die Bauern und ihre Kühe, nimmt die Gemelke zweimal am Tag auf, hält
-Behandlungen mit ihren Wartezeiten fest und rechnet den Käse Tag für Tag nach
-dem Milchanteil auf die Bauern um. Dazu Kalender, Abholungen und eine
-Auswertung, die sich auf jeden Stichtag stellen lässt.
+Das ist der Käse, den die Alp selbst hergibt — was in der Hütte gegessen wird
+und was Helfer als Lohn mitnehmen dürfen. Er steht unter „Alpkäse" als eigene
+Liste: Menge eintragen, Notiz dazu, fertig. Ein Datum braucht es nicht, weil sich
+beim Laib, den jemand im Herbst mitnimmt, ohnehin nicht mehr sagen lässt, aus
+welchem Kessel er stammt.
 
-Kein Konto, kein Server, keine Cloud: alles steht in einer Datei auf dem eigenen
-Rechner, und ein Backup heißt, diese Datei zu kopieren. Wer die Werte lieber im
-Stall einträgt als in der Hütte, schaltet in den Einstellungen die Freigabe im
-Heimnetz ein und scannt den QR-Code mit dem Telefon — dieselbe Oberfläche,
-dieselben Daten.
+Abgezogen wird er am Ende, von dem was noch offen ist, und getragen von allen
+Bauern im Verhältnis dessen, was jedem zusteht. Die Tage und die
+Monatsabschlüsse bleiben davon unberührt — ein Eintrag lässt sich also jederzeit
+nachtragen, ohne dass sich eine abgerechnete Zahl von gestern verschiebt. Wer
+wieviel davon trägt, steht auf der Seite selbst und in der Abrechnung als eigene
+Spalte im Käsekonto.
+
+Der eingestellte Abzug in den Einstellungen bleibt daneben unverändert. Die
+beiden sehen ähnlich aus, sind es aber nicht: der Abzug ist ein Satz, der Tag für
+Tag greift, der Alpkäse eine gewogene Menge ohne Datum.
+
+Sonst: kleinere Verbesserungen am Wortlaut der Oberfläche.
 
 ## Welche Datei
 
 | System                | Datei                        |
 | --------------------- | ---------------------------- |
-| Mac mit Apple Silicon | `Milch_0.1.0_aarch64.dmg`    |
-| Mac mit Intel         | `Milch_0.1.0_x64.dmg`        |
-| Windows               | `Milch_0.1.0_x64-setup.exe`  |
-| Linux                 | `Milch_0.1.0_amd64.AppImage` |
+| Mac mit Apple Silicon | `Milch_0.2.0_aarch64.dmg`    |
+| Mac mit Intel         | `Milch_0.2.0_x64.dmg`        |
+| Windows               | `Milch_0.2.0_x64-setup.exe`  |
+| Linux                 | `Milch_0.2.0_amd64.AppImage` |
 
 Für Windows liegt daneben ein `.msi`, für Linux ein `.deb` und ein `.rpm`, falls
 jemand sie lieber über den Paketmanager installiert. Die Dateien mit der Endung
 `.sig` und die `latest.json` gehören zum Update-Mechanismus und müssen nicht
 heruntergeladen werden.
+
+Wer schon eine ältere Fassung hat, muss nichts davon laden: das Programm meldet
+sich beim Start von selbst und spielt die neue Version auf Wunsch ein. Die Daten
+bleiben dabei, wo sie sind — der Ordner steht neben dem Programm, nicht darin.
 
 ## Beim ersten Start
 
@@ -38,13 +50,9 @@ deshalb **einmal**, beim ersten Öffnen:
   Informationen" erscheint „Trotzdem ausführen".
 - **Linux** fragt nicht.
 
-Ab dann meldet sich das Programm von selbst, wenn es eine neuere Version gibt,
-und installiert sie auf Wunsch. Ist alles aktuell, erscheint nichts.
-
 ## Wo die Daten liegen
 
 macOS `~/Library/Application Support/de.alp.milch/milch.db`, Windows
 `%APPDATA%\de.alp.milch\milch.db`, Linux
-`~/.local/share/de.alp.milch/milch.db`. Der Ordner steht neben dem Programm,
-nicht darin: ein Update darüberzuinstallieren rührt ihn nicht an. Den
-vollständigen Pfad zeigen die Einstellungen an.
+`~/.local/share/de.alp.milch/milch.db`. Den vollständigen Pfad zeigen die
+Einstellungen an.

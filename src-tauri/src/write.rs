@@ -180,6 +180,16 @@ struct ProductionDaysInput {
     kg: f64,
 }
 
+/// Käse, den die Alp selbst verbraucht. Kein Bauer dabei — er gehört allen.
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct AlpCheeseInput {
+    season_id: i64,
+    kg: f64,
+    #[serde(default)]
+    note: Option<String>,
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct PickupInput {
@@ -507,6 +517,21 @@ pub fn dispatch(conn: &Connection, name: &str, payload: Value) -> Cmd {
             Ok(None)
         }
 
+        "createAlpCheese" => {
+            let input: AlpCheeseInput = parse(payload)?;
+            conn.execute(
+                "INSERT INTO alp_cheese (season_id, kg, note) VALUES (?1, ?2, ?3)",
+                params![input.season_id, input.kg.max(0.0), input.note],
+            )
+            .map_err(to_text)?;
+            Ok(Some(conn.last_insert_rowid()))
+        }
+
+        "deleteAlpCheese" => {
+            let input: IdInput = parse(payload)?;
+            sql(conn.execute("DELETE FROM alp_cheese WHERE id = ?1", [input.id]))
+        }
+
         "createPickup" => {
             let input: PickupInput = parse(payload)?;
             conn.execute(
@@ -670,6 +695,7 @@ pub fn dispatch(conn: &Connection, name: &str, payload: Value) -> Cmd {
             // überlassen: sonst hinge ein Löschen an einer noch belegten Kuh.
             tx.execute_batch(
                 "DELETE FROM pickups;
+                 DELETE FROM alp_cheese;
                  DELETE FROM cheese_production;
                  DELETE FROM treatments;
                  DELETE FROM measurement_values;

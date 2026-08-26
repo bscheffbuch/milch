@@ -82,6 +82,20 @@ function mergeMonths(months: MonthSummary[]): {
 }
 
 /**
+ * Der Beisatz unter der verteilten Menge. Zwei Dinge können sie mindern, und
+ * sie tun es an verschiedenen Stellen: Käse ohne verwertbare Milch dahinter
+ * lässt sich gar nicht zuordnen, der Alpkäse dagegen wird sehr wohl
+ * zugeordnet — nur eben erst am Ende, allen zusammen. Deshalb steht er hier
+ * als Beisatz und nicht im Wert darüber.
+ */
+function shareNote(unallocatedKg: number, alpKg: number): string | undefined {
+  const parts: string[] = [];
+  if (unallocatedKg > 0) parts.push(`${kg(unallocatedKg)} kg nicht zuordenbar`);
+  if (alpKg > 0) parts.push(`davon ${kg(alpKg)} kg Alpkäse`);
+  return parts.length > 0 ? parts.join(", ") : undefined;
+}
+
+/**
  * Das Käsekonto, monatlich abgerechnet. Ist ein Monat gewählt, steht seine
  * eigene Abrechnung da — Übertrag, Anspruch, Abholungen, Rest. Sonst der
  * Gesamtstand, und daneben als Schatten, was der laufende Monat bis heute
@@ -140,6 +154,11 @@ function CheeseAccount({ month, view }: { month: string | null; view: SeasonView
     );
   }
 
+  // Der Alpkäse gehört in keinen Monat und steht deshalb nur hier, in der
+  // Gesamtansicht. Ohne ihn ginge die Zeile nicht auf: abgerechnet minus
+  // abgeholt minus Alpkäse ergibt, was offen ist.
+  const alpKg = view.totals.alpKg;
+
   return (
     <div className="card">
       <div className="card-head">
@@ -157,6 +176,7 @@ function CheeseAccount({ month, view }: { month: string | null; view: SeasonView
               <th>Bauer</th>
               <th className="t-num">abgerechnet</th>
               <th className="t-num">abgeholt</th>
+              {alpKg > 0 ? <th className="t-num">Alpkäse</th> : null}
               <th className="t-num">offen</th>
               {openMonth ? (
                 <th className="t-num">
@@ -172,6 +192,9 @@ function CheeseAccount({ month, view }: { month: string | null; view: SeasonView
                 <td>{view.farmerNames.get(balance.farmerId) ?? "—"}</td>
                 <td className="t-num">{kg(balance.settledKg)}</td>
                 <td className="t-num faint">{kg(balance.pickedUpKg)}</td>
+                {alpKg > 0 ? (
+                  <td className="t-num faint">{kg(balance.alpKg)}</td>
+                ) : null}
                 <td className="t-num">{kg(balance.settledOutstandingKg)}</td>
                 {openMonth ? (
                   <td className="t-num">
@@ -189,6 +212,14 @@ function CheeseAccount({ month, view }: { month: string | null; view: SeasonView
           </tbody>
         </table>
       </div>
+      {alpKg > 0 ? (
+        <p className="small faint" style={{ marginTop: 10 }}>
+          Die Spalte Alpkäse ist der Anteil, den jeder an den {kg(alpKg)} kg trägt, die
+          die Alp selbst hergegeben hat — im Verhältnis seines Anspruchs. Sie hat kein
+          Datum und steht deshalb in keinem einzelnen Monat, sondern mindert den offenen
+          Stand als Ganzes.
+        </p>
+      ) : null}
       {openMonth ? (
         <p className="small faint" style={{ marginTop: 10 }}>
           Die letzte Spalte ist noch nicht abgerechnet: sie zeigt, was im{" "}
@@ -226,6 +257,10 @@ export default function Page() {
   }
 
   const maxCheese = Math.max(...merged.perFarmer.map((row) => row.cheeseDailyKg), 1);
+
+  // Der Alpkäse hat kein Datum und lässt sich deshalb keinem Monat zuschlagen.
+  // Wer einen einzelnen Monat ansieht, bekommt ihn gar nicht zu sehen.
+  const alpKg = selected ? 0 : view.totals.alpKg;
 
   // Der Verlauf folgt demselben Zeitraum wie die Tabelle darüber.
   const distribution = buildDistribution(
@@ -280,11 +315,7 @@ export default function Page() {
                 label="Verteilt"
                 value={kg0(merged.netCheeseKg - merged.unallocatedKg)}
                 unit="kg"
-                note={
-                  merged.unallocatedKg > 0
-                    ? `${kg(merged.unallocatedKg)} kg nicht zuordenbar`
-                    : undefined
-                }
+                note={shareNote(merged.unallocatedKg, alpKg)}
               />
               <Stat
                 label="Milch verwertbar"
@@ -488,6 +519,15 @@ export default function Page() {
                   <li>
                     Vor der Verteilung wird der eingestellte Abzug abgezogen —{" "}
                     {kg(merged.deductionKg)} kg in diesem Zeitraum.
+                  </li>
+                ) : null}
+                {alpKg > 0 ? (
+                  <li>
+                    Der Alpkäse — was die Alp selbst isst und was Helfer mitnehmen
+                    dürfen — hat kein Datum und wird deshalb nicht Tag für Tag
+                    verrechnet, sondern am Ende von dem abgezogen, was zu verteilen ist:{" "}
+                    {kg(alpKg)} kg in dieser Saison, getragen von allen im Verhältnis
+                    ihres Anspruchs.
                   </li>
                 ) : null}
               </ul>

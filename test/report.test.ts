@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { runEngine } from "../lib/calc/engine";
-import { buildFarmerBalances } from "../lib/calc/report";
+import { buildFarmerBalances, buildSeasonTotals } from "../lib/calc/report";
 import type { CowInput, EngineInput } from "../lib/calc/types";
 
 /*
@@ -85,6 +85,41 @@ describe("Käsekonto", () => {
     assert.equal(first.outstandingKg, 1200);
     assert.equal(first.months.find((month) => month.month === "2026-07")?.open, true);
     assert.equal(first.months.find((month) => month.month === "2026-06")?.open, false);
+  });
+
+  it("zieht den Alpkäse vom offenen Stand ab, nicht von einem Monat", () => {
+    const result = runEngine(input());
+    const balances = buildFarmerBalances(result, [], cowCount, SEASON_END, 100);
+    const [first, second] = balances;
+
+    // Anspruch 3:1 — also trägt der eine 75 kg, der andere 25 kg.
+    assert.equal(first.alpKg, 75);
+    assert.equal(second.alpKg, 25);
+
+    // Die Monatszeilen bleiben unberührt: der Alpkäse gehört in keinen Monat.
+    assert.equal(first.entitledKg, 1800);
+    assert.equal(first.months.find((month) => month.month === "2026-06")?.entitledKg, 900);
+
+    // Abgezogen wird er vom offenen Stand — dort und nur dort.
+    assert.equal(first.outstandingKg, 1725);
+    assert.equal(first.settledOutstandingKg, 1725);
+  });
+
+  it("lässt den Alpkäse liegen, solange kein Anspruch dasteht", () => {
+    const leer = input();
+    leer.production = {};
+    const balances = buildFarmerBalances(runEngine(leer), [], cowCount, SEASON_END, 100);
+
+    for (const balance of balances) assert.equal(balance.alpKg, 0);
+  });
+
+  it("nennt in den Saisonzahlen, was nach Abzug und Alpkäse zu verteilen bleibt", () => {
+    const totals = buildSeasonTotals(runEngine(input()), [], SEASON_END, 100);
+
+    assert.equal(totals.producedKg, 2400);
+    assert.equal(totals.netCheeseKg, 2400); // kein Abzug eingestellt
+    assert.equal(totals.alpKg, 100);
+    assert.equal(totals.distributableKg, 2300);
   });
 
   it("kennt am Saisonende keinen laufenden Monat mehr", () => {

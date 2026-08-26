@@ -266,6 +266,25 @@ fn list_production(conn: &Connection, season_id: i64) -> rusqlite::Result<Vec<Ch
     Ok(items)
 }
 
+/// Neueste zuerst — die Liste wird von oben gelesen und oben ergänzt.
+fn list_alp_cheese(conn: &Connection, season_id: i64) -> rusqlite::Result<Vec<AlpCheese>> {
+    let mut stmt = conn.prepare(
+        "SELECT id, season_id, kg, note
+         FROM alp_cheese WHERE season_id = ?1 ORDER BY id DESC",
+    )?;
+    let items = stmt
+        .query_map([season_id], |row| {
+            Ok(AlpCheese {
+                id: row.get(0)?,
+                season_id: row.get(1)?,
+                kg: row.get(2)?,
+                note: row.get(3)?,
+            })
+        })?
+        .collect::<Result<_, _>>()?;
+    Ok(items)
+}
+
 fn list_pickups(conn: &Connection, season_id: i64) -> rusqlite::Result<Vec<Pickup>> {
     let mut stmt = conn.prepare(
         "SELECT id, season_id, farmer_id, date, kg, wheels, note
@@ -313,6 +332,7 @@ pub fn snapshot(conn: &Connection, db_path: &str) -> rusqlite::Result<Snapshot> 
         treatment_types: list_treatment_types(conn)?,
         treatments: list_treatments(conn, season_id)?,
         production: list_production(conn, season_id)?,
+        alp_cheese: list_alp_cheese(conn, season_id)?,
         pickups: list_pickups(conn, season_id)?,
     })
 }
