@@ -202,35 +202,6 @@ export default function Page() {
             </div>
           )}
         </div>
-
-        <div className="card">
-          <div className="card-head">
-            <h2>Wie gerechnet wird</h2>
-          </div>
-          <ul className="prose small">
-            <li>
-              Der Alpkäse hat kein Datum und geht deshalb in keinen einzelnen Tag und in
-              keinen einzelnen Monat ein. Die Tagesabrechnung und die Monatsabschlüsse
-              bleiben so, wie sie ohne ihn wären.
-            </li>
-            <li>
-              Abgezogen wird er ganz am Ende, von dem, was noch offen ist. Niemand bekommt
-              ihn abgezogen, weil er ihn abgeholt hätte — es kommt schlicht bei allen
-              weniger an.
-            </li>
-            <li>
-              Getragen wird er im Verhältnis dessen, was jedem Bauern über die Saison
-              zusteht. Wer mehr Milch gegeben hat, hat einen größeren Anspruch und trägt
-              deshalb mehr davon.
-            </li>
-            <li>
-              Solange noch niemandem Käse zusteht, bleibt der Alpkäse liegen; er kommt zum
-              Tragen, sobald die erste Käsemenge dasteht. Ein Eintrag lässt sich jederzeit
-              nachtragen — er verschiebt keine bereits abgerechneten Monate, sondern nur
-              den offenen Stand.
-            </li>
-          </ul>
-        </div>
       </div>
     </>
   );
